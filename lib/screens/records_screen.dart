@@ -19,80 +19,82 @@ class RecordsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Records'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 21),
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 15,
-            ),
-            const TitleItem(title: 'Todays Attendance'),
-            Container(
-              height: 193,
-              alignment: Alignment.center,
-              margin: const EdgeInsets.symmetric(vertical: 32),
-              decoration: BoxDecoration(
-                color: AppColors.bg200,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    blurRadius: 4,
-                    color: Colors.black.withOpacity(0.2),
-                  ),
-                ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Records'),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 21),
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 15,
               ),
-              child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 28),
-                      child: AttendanceItem(
-                        subjectName: 'Microwave Engineering',
-                        classType: 'Theory',
-                        timings: '1:00 pm- 2:25 pm',
-                        roomNumber: '405',
-                        section: '8E7',
-                        attendance: '58',
-                      ),
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return const SizedBox(
-                      width: 9,
-                    );
-                  },
-                  itemCount: 3),
-            ),
-            const TitleItem(title: 'Teaching Semesters'),
-            Expanded(
-              child: GridView.builder(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 32, horizontal: 41),
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  mainAxisSpacing: 27,
-                  crossAxisCount: 2,
-                  mainAxisExtent: 103,
-                  crossAxisSpacing: 27,
-                  childAspectRatio: 1.1844,
+              const TitleItem(title: 'Todays Attendance'),
+              Container(
+                height: 200,
+                alignment: Alignment.center,
+                margin: const EdgeInsets.symmetric(vertical: 25),
+                decoration: BoxDecoration(
+                  color: AppColors.bg200,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 4,
+                      color: Colors.black.withOpacity(0.2),
+                    ),
+                  ],
                 ),
-                itemCount: 4,
-                itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                    onTap: () => _showBottomSheet(context),
-                    child: SemesterItem(semNo: index + 1),
-                  );
-                },
+                child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 28),
+                        child: AttendanceItem(
+                          subjectName: 'Microwave Engineering',
+                          classType: 'Theory',
+                          timings: '1:00 pm- 2:25 pm',
+                          roomNumber: '405',
+                          section: '8E7',
+                          attendance: '58',
+                        ),
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return const SizedBox(
+                        width: 9,
+                      );
+                    },
+                    itemCount: 3),
               ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-          ],
+              const TitleItem(title: 'Teaching Semesters'),
+              Expanded(
+                child: GridView.builder(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 25, horizontal: 41),
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    mainAxisSpacing: 27,
+                    crossAxisCount: 2,
+                    mainAxisExtent: 103,
+                    crossAxisSpacing: 27,
+                    childAspectRatio: 1.1844,
+                  ),
+                  itemCount: 4,
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      onTap: () => _showBottomSheet(context),
+                      child: SemesterItem(semNo: index + 1),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+            ],
+          ),
         ),
       ),
     );

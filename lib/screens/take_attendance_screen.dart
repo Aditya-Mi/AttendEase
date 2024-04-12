@@ -15,99 +15,101 @@ class _TakeAttendanceScreenState extends State<TakeAttendanceScreen> {
   bool _isSearching = false;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.bg200,
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            if (_isSearching) {
-              setState(() {
-                _isSearching = !_isSearching;
-              });
-            } else {
-              Navigator.of(context).pop();
-            }
-          },
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.white,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColors.bg200,
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              if (_isSearching) {
+                setState(() {
+                  _isSearching = !_isSearching;
+                });
+              } else {
+                Navigator.of(context).pop();
+              }
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
           ),
+          title: _isSearching
+              ? SearchWidget(
+                  onChanged: (String? value) {}, onEditingComplete: () {})
+              : const Text('Take Attendance'),
+          actions: _isSearching
+              ? null
+              : [
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _isSearching = !_isSearching;
+                      });
+                    },
+                    icon: const Icon(
+                      Icons.search,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
         ),
-        title: _isSearching
-            ? SearchWidget(
-                onChanged: (String? value) {}, onEditingComplete: () {})
-            : const Text('Take Attendance'),
-        actions: _isSearching
-            ? null
-            : [
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _isSearching = !_isSearching;
-                    });
-                  },
-                  icon: const Icon(
-                    Icons.search,
-                    color: Colors.white,
+        body: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 21),
+              margin: const EdgeInsets.only(bottom: 10),
+              width: double.infinity,
+              alignment: Alignment.centerLeft,
+              decoration: BoxDecoration(
+                color: AppColors.bg100,
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 4,
+                    offset: const Offset(0, 4),
+                    color: Colors.black.withOpacity(0.05),
                   ),
-                ),
-              ],
-      ),
-      body: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 21),
-            margin: const EdgeInsets.only(bottom: 10),
-            width: double.infinity,
-            alignment: Alignment.centerLeft,
-            decoration: BoxDecoration(
-              color: AppColors.bg100,
-              boxShadow: [
-                BoxShadow(
-                  blurRadius: 4,
-                  offset: const Offset(0, 4),
-                  color: Colors.black.withOpacity(0.05),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Microwave Engineering | Theory | 8E7',
-                  style: AppText.textStyle(
-                    color: AppColors.text100,
-                    size: 16.18,
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Microwave Engineering | Theory | 8E7',
+                    style: AppText.textStyle(
+                      color: AppColors.text100,
+                      size: 16.18,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 7,
-                ),
-                Text(
-                  'Total Students : 40',
-                  style: AppText.textStyle(
-                    color: AppColors.text100,
-                    size: 16.18,
+                  const SizedBox(
+                    height: 7,
                   ),
-                ),
-              ],
+                  Text(
+                    'Total Students : 40',
+                    style: AppText.textStyle(
+                      color: AppColors.text100,
+                      size: 16.18,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: ListView.separated(
-              padding: const EdgeInsets.symmetric(horizontal: 21),
-              itemCount: 10,
-              separatorBuilder: (context, index) {
-                return const SizedBox(
-                  height: 21,
-                );
-              },
-              itemBuilder: (context, index) {
-                return const TakeAttendanceItem();
-              },
+            Expanded(
+              child: ListView.separated(
+                padding: const EdgeInsets.symmetric(horizontal: 21),
+                itemCount: 10,
+                separatorBuilder: (context, index) {
+                  return const SizedBox(
+                    height: 21,
+                  );
+                },
+                itemBuilder: (context, index) {
+                  return const TakeAttendanceItem();
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

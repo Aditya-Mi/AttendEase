@@ -29,86 +29,88 @@ class _ListOfStudentsScreenState extends State<ListOfStudentsScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            if (_isSearching) {
-              setState(() {
-                _isSearching = !_isSearching;
-              });
-            } else {
-              Navigator.of(context).pop();
-            }
-          },
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.white,
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              if (_isSearching) {
+                setState(() {
+                  _isSearching = !_isSearching;
+                });
+              } else {
+                Navigator.of(context).pop();
+              }
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
           ),
-        ),
-        title: _isSearching
-            ? SearchWidget(
-                onChanged: (String? value) {}, onEditingComplete: () {})
-            : const Text('List of Students'),
-        actions: _isSearching
-            ? null
-            : [
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _isSearching = !_isSearching;
-                    });
-                  },
-                  icon: const Icon(
-                    Icons.search,
-                    color: Colors.white,
+          title: _isSearching
+              ? SearchWidget(
+                  onChanged: (String? value) {}, onEditingComplete: () {})
+              : const Text('List of Students'),
+          actions: _isSearching
+              ? null
+              : [
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _isSearching = !_isSearching;
+                      });
+                    },
+                    icon: const Icon(
+                      Icons.search,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-              ],
-      ),
-      body: Column(
-        children: [
-          Container(
-            height: 53,
-            decoration: BoxDecoration(
-              color: AppColors.bg100,
-              boxShadow: [
-                BoxShadow(
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
-                  color: Colors.black.withOpacity(0.10),
-                ),
-              ],
-            ),
-            child: TabBar(
-              indicatorSize: TabBarIndicatorSize.tab,
-              controller: _tabController,
-              indicator: const BoxDecoration(
-                color: AppColors.primary100,
+                ],
+        ),
+        body: Column(
+          children: [
+            Container(
+              height: 53,
+              decoration: BoxDecoration(
+                color: AppColors.bg100,
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                    color: Colors.black.withOpacity(0.10),
+                  ),
+                ],
               ),
-              labelStyle: AppText.textStyle(color: AppColors.bg100, size: 18),
-              unselectedLabelStyle:
-                  AppText.textStyle(color: AppColors.text100, size: 18),
-              tabs: const [
-                Tab(
-                  text: 'Present',
+              child: TabBar(
+                indicatorSize: TabBarIndicatorSize.tab,
+                controller: _tabController,
+                indicator: const BoxDecoration(
+                  color: AppColors.primary100,
                 ),
-                Tab(
-                  text: 'Absent',
-                ),
-              ],
+                labelStyle: AppText.textStyle(color: AppColors.bg100, size: 18),
+                unselectedLabelStyle:
+                    AppText.textStyle(color: AppColors.text100, size: 18),
+                tabs: const [
+                  Tab(
+                    text: 'Present',
+                  ),
+                  Tab(
+                    text: 'Absent',
+                  ),
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: const [
-                StudentsList(title: 'Present', noOfStudents: 20),
-                StudentsList(title: 'Absent', noOfStudents: 20),
-              ],
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: const [
+                  StudentsList(title: 'Present', noOfStudents: 20),
+                  StudentsList(title: 'Absent', noOfStudents: 20),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

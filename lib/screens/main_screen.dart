@@ -24,55 +24,57 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: screens[_selectedIndex],
-      bottomNavigationBar: Theme(
-        data: Theme.of(context).copyWith(
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-        ),
-        child: BottomNavigationBar(
-          backgroundColor: AppColors.bg200,
-          currentIndex: _selectedIndex,
-          type: BottomNavigationBarType.fixed,
-          showSelectedLabels: true,
-          showUnselectedLabels: true,
-          selectedIconTheme: const IconThemeData(color: AppColors.primary100),
-          unselectedIconTheme: const IconThemeData(color: AppColors.text200),
-          selectedLabelStyle:
-              AppText.textStyle(color: AppColors.primary100, size: 12.94),
-          unselectedLabelStyle:
-              AppText.textStyle(color: AppColors.text200, size: 12.94),
-          elevation: 0.0,
-          items: const [
-            BottomNavigationBarItem(
-              label: 'Home',
-              icon: Icon(
-                Icons.home_outlined,
+    return SafeArea(
+      child: Scaffold(
+        body: screens[_selectedIndex],
+        bottomNavigationBar: Theme(
+          data: Theme.of(context).copyWith(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+          ),
+          child: BottomNavigationBar(
+            backgroundColor: AppColors.bg200,
+            currentIndex: _selectedIndex,
+            type: BottomNavigationBarType.fixed,
+            showSelectedLabels: true,
+            showUnselectedLabels: true,
+            selectedIconTheme: const IconThemeData(color: AppColors.primary100),
+            unselectedIconTheme: const IconThemeData(color: AppColors.text200),
+            selectedLabelStyle:
+                AppText.textStyle(color: AppColors.primary100, size: 12.94),
+            unselectedLabelStyle:
+                AppText.textStyle(color: AppColors.text200, size: 12.94),
+            elevation: 0.0,
+            items: const [
+              BottomNavigationBarItem(
+                label: 'Home',
+                icon: Icon(
+                  Icons.home_outlined,
+                ),
               ),
-            ),
-            BottomNavigationBarItem(
-              label: 'Time Table',
-              icon: Icon(
-                Icons.pending_actions,
+              BottomNavigationBarItem(
+                label: 'Time Table',
+                icon: Icon(
+                  Icons.pending_actions,
+                ),
               ),
-            ),
-            BottomNavigationBarItem(
-              label: 'Records',
-              icon: Icon(
-                Icons.person,
+              BottomNavigationBarItem(
+                label: 'Records',
+                icon: Icon(
+                  Icons.person,
+                ),
               ),
-            ),
-            BottomNavigationBarItem(
-              label: 'Settings',
-              icon: Icon(
-                Icons.settings_outlined,
+              BottomNavigationBarItem(
+                label: 'Settings',
+                icon: Icon(
+                  Icons.settings_outlined,
+                ),
               ),
-            ),
-          ],
-          onTap: (index) => setState(() {
-            _selectedIndex = index;
-          }),
+            ],
+            onTap: (index) => setState(() {
+              _selectedIndex = index;
+            }),
+          ),
         ),
       ),
     );

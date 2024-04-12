@@ -22,8 +22,8 @@ class AttendanceItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 137,
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 16),
+      width: 300,
       decoration: BoxDecoration(
         color: AppColors.bg100,
         borderRadius: BorderRadius.circular(10),
