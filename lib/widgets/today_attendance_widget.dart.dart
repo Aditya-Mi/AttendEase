@@ -3,14 +3,14 @@ import 'package:attendease/core/app_text.dart';
 import 'package:attendease/core/widgets/progress_bar.dart';
 import 'package:flutter/material.dart';
 
-class AttendanceItem extends StatelessWidget {
+class TodayAttendanceItem extends StatelessWidget {
   final String subjectName;
   final String classType;
   final String timings;
   final String roomNumber;
   final String section;
   final String attendance;
-  const AttendanceItem(
+  const TodayAttendanceItem(
       {super.key,
       required this.subjectName,
       required this.classType,
@@ -23,7 +23,7 @@ class AttendanceItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 16),
-      height: 150,
+      width: 300,
       decoration: BoxDecoration(
         color: AppColors.bg100,
         borderRadius: BorderRadius.circular(10),

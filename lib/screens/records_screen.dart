@@ -1,7 +1,7 @@
 import 'package:attendease/core/app_colors.dart';
 import 'package:attendease/core/widgets/title_item.dart';
 import 'package:attendease/screens/bottom_sheet_screen.dart';
-import 'package:attendease/widgets/attendance_item.dart';
+import 'package:attendease/widgets/today_attendance_widget.dart.dart';
 import 'package:attendease/widgets/semester_item.dart';
 import 'package:flutter/material.dart';
 
@@ -51,7 +51,7 @@ class RecordsScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return const Padding(
                         padding: EdgeInsets.symmetric(vertical: 28),
-                        child: AttendanceItem(
+                        child: TodayAttendanceItem(
                           subjectName: 'Microwave Engineering',
                           classType: 'Theory',
                           timings: '1:00 pm- 2:25 pm',

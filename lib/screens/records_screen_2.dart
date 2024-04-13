@@ -232,7 +232,7 @@ class _RecordsScreen2State extends State<RecordsScreen2> {
             Expanded(
               child: Container(
                 color: AppColors.bg200,
-                padding: const EdgeInsets.symmetric(horizontal: 30),
+                padding: const EdgeInsets.symmetric(horizontal: 40),
                 child: ListView.separated(
                   itemBuilder: (context, index) {
                     return GestureDetector(

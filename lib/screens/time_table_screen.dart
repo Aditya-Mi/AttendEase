@@ -1,5 +1,6 @@
 import 'package:attendease/core/app_colors.dart';
 import 'package:attendease/core/app_text.dart';
+import 'package:attendease/widgets/time_line_item.dart';
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -105,6 +106,20 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                       ),
                     )
                   }),
+            ),
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                children: const [
+                  TimeLineItem(isFirst: true, isLast: false, isBreak: false),
+                  TimeLineItem(isFirst: false, isLast: false, isBreak: false),
+                  TimeLineItem(isFirst: false, isLast: false, isBreak: false),
+                  TimeLineItem(isFirst: false, isLast: false, isBreak: true),
+                  TimeLineItem(isFirst: false, isLast: false, isBreak: false),
+                  TimeLineItem(isFirst: false, isLast: false, isBreak: false),
+                  TimeLineItem(isFirst: false, isLast: true, isBreak: false),
+                ],
+              ),
             ),
           ],
         ),

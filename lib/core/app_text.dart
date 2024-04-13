@@ -6,6 +6,7 @@ class AppText {
       fontWeight: FontWeight.w500,
       color: color,
       fontSize: size,
+      letterSpacing: -0.3,
     );
   }
 }
