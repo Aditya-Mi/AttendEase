@@ -20,7 +20,7 @@ class _TimeTableScreenState extends ConsumerState<TimeTableScreen>
   void initState() {
     super.initState();
     _tabController = TabController(
-        length: 6, vsync: this, initialIndex: DateTime.now().weekday);
+        length: 6, vsync: this, initialIndex: DateTime.now().weekday - 1);
   }
 
   @override

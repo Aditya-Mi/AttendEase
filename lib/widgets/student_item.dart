@@ -1,13 +1,23 @@
 import 'package:attendease/core/app_colors.dart';
 import 'package:attendease/core/app_text.dart';
+import 'package:attendease/core/functions.dart';
 import 'package:attendease/core/widgets/custom_divider.dart';
+import 'package:attendease/models/class_record.dart';
+import 'package:attendease/models/filters.dart';
 import 'package:flutter/material.dart';
 
 class StudentItem extends StatelessWidget {
-  const StudentItem({super.key});
+  final Student student;
+  final Filters filters;
+  const StudentItem({
+    super.key,
+    required this.student,
+    required this.filters,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final year = mapSemesterToYear(filters.semester!);
     return Container(
       height: 106,
       decoration: BoxDecoration(
@@ -35,24 +45,24 @@ class StudentItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Aditya Mittal',
+                '${student.firstName} ${student.lastName}',
                 style: MyAppTypography.body2,
               ),
               Text(
-                '14314803121',
+                generateRandomNumber(),
                 style: MyAppTypography.body1,
               ),
               const Spacer(),
               Text(
-                'Year : 4th Year',
+                'Year : $year${mapInputToValue(year)} Year',
                 style: MyAppTypography.body3,
               ),
               Text(
-                'Branch : ECE',
+                'Branch : ${filters.branch}',
                 style: MyAppTypography.body3,
               ),
               Text(
-                'Section : 7E8',
+                'Section : ${filters.section}',
                 style: MyAppTypography.body3,
               ),
             ],

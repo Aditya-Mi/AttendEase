@@ -1,32 +1,46 @@
 import 'package:attendease/core/app_colors.dart';
 import 'package:attendease/core/app_shadow.dart';
 import 'package:attendease/core/app_text.dart';
+import 'package:attendease/core/functions.dart';
+import 'package:attendease/models/single_class_record.dart';
+import 'package:attendease/models/student_attendance.dart';
 import 'package:flutter/material.dart';
 
 class TakeAttendanceItem extends StatefulWidget {
-  const TakeAttendanceItem({super.key});
+  final Student student;
+  final int noOfClasses;
+  final StudentAttendance studentAttendance;
+  final Function(AttendanceStatus) onAttendanceChanged;
+  const TakeAttendanceItem({
+    super.key,
+    required this.student,
+    required this.noOfClasses,
+    required this.studentAttendance,
+    required this.onAttendanceChanged,
+  });
 
   @override
   State<TakeAttendanceItem> createState() => _TakeAttendanceItemState();
 }
 
 class _TakeAttendanceItemState extends State<TakeAttendanceItem> {
-  bool _isAbsent = false;
-  bool _isPresent = false;
-
   double getWidth(bool isPresentButton, double width) {
     if (isPresentButton) {
-      if (_isPresent) {
+      if (widget.studentAttendance.attendanceStatus ==
+          AttendanceStatus.Present) {
         return (width - 4 * 21 - 7) * 0.75;
-      } else if (_isAbsent) {
+      } else if (widget.studentAttendance.attendanceStatus ==
+          AttendanceStatus.Absent) {
         return (width - 4 * 21 - 7) * 0.25;
       } else {
         return (width - 4 * 21 - 20) * 0.5;
       }
     } else {
-      if (_isAbsent) {
+      if (widget.studentAttendance.attendanceStatus ==
+          AttendanceStatus.Absent) {
         return (width - 4 * 21 - 7) * 0.75;
-      } else if (_isPresent) {
+      } else if (widget.studentAttendance.attendanceStatus ==
+          AttendanceStatus.Present) {
         return (width - 4 * 21 - 7) * 0.25;
       } else {
         return (width - 4 * 21 - 20) * 0.5;
@@ -36,6 +50,8 @@ class _TakeAttendanceItemState extends State<TakeAttendanceItem> {
 
   @override
   Widget build(BuildContext context) {
+    final attendancePercent =
+        (widget.student.classAttended / widget.noOfClasses) * 100;
     final width = MediaQuery.of(context).size.width;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 7),
@@ -59,11 +75,11 @@ class _TakeAttendanceItemState extends State<TakeAttendanceItem> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      'Shivang Singh',
+                      '${widget.student.firstName} ${widget.student.lastName}',
                       style: MyAppTypography.body2,
                     ),
                     Text(
-                      '13214802820',
+                      generateRandomNumber(),
                       style: MyAppTypography.body3.copyWith(fontSize: 12),
                     ),
                   ],
@@ -75,7 +91,7 @@ class _TakeAttendanceItemState extends State<TakeAttendanceItem> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      '48%',
+                      '$attendancePercent%',
                       style: MyAppTypography.body3,
                     ),
                     Text(
@@ -96,13 +112,15 @@ class _TakeAttendanceItemState extends State<TakeAttendanceItem> {
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    if (_isPresent) {
+                    if (widget.studentAttendance.attendanceStatus ==
+                        AttendanceStatus.Present) {
                       return;
                     }
-                    if (_isAbsent) {
-                      _isAbsent = !_isAbsent;
+                    if (widget.studentAttendance.attendanceStatus ==
+                        AttendanceStatus.Absent) {
+                      widget.onAttendanceChanged(AttendanceStatus.None);
                     } else {
-                      _isPresent = !_isPresent;
+                      widget.onAttendanceChanged(AttendanceStatus.None);
                     }
                   });
                 },
@@ -115,7 +133,8 @@ class _TakeAttendanceItemState extends State<TakeAttendanceItem> {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: _isAbsent
+                    color: widget.studentAttendance.attendanceStatus ==
+                            AttendanceStatus.Absent
                         ? AppColors.undoButtonColor
                         : AppColors.primary100,
                     boxShadow: [
@@ -124,7 +143,10 @@ class _TakeAttendanceItemState extends State<TakeAttendanceItem> {
                     ],
                   ),
                   child: Text(
-                    _isAbsent ? 'Undo' : 'Present',
+                    widget.studentAttendance.attendanceStatus ==
+                            AttendanceStatus.Absent
+                        ? 'Undo'
+                        : 'Present',
                     style:
                         MyAppTypography.body3.copyWith(color: AppColors.bg100),
                   ),
@@ -132,18 +154,25 @@ class _TakeAttendanceItemState extends State<TakeAttendanceItem> {
               ),
               AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
-                width: _isAbsent || _isPresent ? 7 : 20,
+                width: widget.studentAttendance.attendanceStatus ==
+                            AttendanceStatus.Absent ||
+                        widget.studentAttendance.attendanceStatus ==
+                            AttendanceStatus.Present
+                    ? 7
+                    : 20,
               ),
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    if (_isAbsent) {
+                    if (widget.studentAttendance.attendanceStatus ==
+                        AttendanceStatus.Absent) {
                       return;
                     }
-                    if (_isPresent) {
-                      _isPresent = !_isPresent;
+                    if (widget.studentAttendance.attendanceStatus ==
+                        AttendanceStatus.Present) {
+                      widget.onAttendanceChanged(AttendanceStatus.None);
                     } else {
-                      _isAbsent = !_isAbsent;
+                      widget.onAttendanceChanged(AttendanceStatus.Absent);
                     }
                   });
                 },
@@ -156,7 +185,8 @@ class _TakeAttendanceItemState extends State<TakeAttendanceItem> {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: _isPresent
+                    color: widget.studentAttendance.attendanceStatus ==
+                            AttendanceStatus.Present
                         ? AppColors.undoButtonColor
                         : AppColors.absentButtonColor,
                     boxShadow: [
@@ -165,7 +195,10 @@ class _TakeAttendanceItemState extends State<TakeAttendanceItem> {
                     ],
                   ),
                   child: Text(
-                    _isPresent ? 'Undo' : 'Absent',
+                    widget.studentAttendance.attendanceStatus ==
+                            AttendanceStatus.Present
+                        ? 'Undo'
+                        : 'Absent',
                     style:
                         MyAppTypography.body3.copyWith(color: AppColors.bg100),
                   ),

@@ -1,8 +1,10 @@
 import 'package:attendease/core/app_colors.dart';
+import 'package:attendease/core/functions.dart';
 import 'package:attendease/core/widgets/title_item.dart';
 import 'package:attendease/models/class.dart';
+import 'package:attendease/models/filters.dart';
 import 'package:attendease/providers/class_provider.dart';
-import 'package:attendease/screens/bottom_sheet_screen.dart';
+import 'package:attendease/providers/filter_provider.dart';
 import 'package:attendease/screens/loading_screen.dart';
 import 'package:attendease/widgets/today_attendance_widget.dart.dart';
 import 'package:attendease/widgets/semester_item.dart';
@@ -12,18 +14,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class RecordsScreen extends ConsumerWidget {
   const RecordsScreen({super.key});
 
-  void _showBottomSheet(BuildContext context) {
-    showModalBottomSheet<dynamic>(
-        context: context,
-        backgroundColor: AppColors.bg100,
-        builder: (BuildContext context) {
-          return const BottomSheetScreen();
-        });
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final classRecords = ref.watch(classRecordProvider);
+    final classRecords = ref.watch(currentClassRecordProvider);
     final classes = ref.read(classProvider).value;
     return SafeArea(
       child: Scaffold(
@@ -87,19 +80,28 @@ class RecordsScreen extends ConsumerWidget {
                     child: GridView.builder(
                       padding: const EdgeInsets.symmetric(
                           vertical: 25, horizontal: 41),
-                      physics: const NeverScrollableScrollPhysics(),
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         mainAxisSpacing: 27,
                         crossAxisCount: 2,
-                        mainAxisExtent: 103,
+                        mainAxisExtent: 100,
                         crossAxisSpacing: 27,
                         childAspectRatio: 1.1844,
                       ),
-                      itemCount: 4,
+                      itemCount: 8,
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
-                          onTap: () => _showBottomSheet(context),
+                          onTap: () {
+                            ref.read(filterProvider.notifier).update(
+                                  (state) => Filters(
+                                    semester: index,
+                                    branch: state.branch,
+                                    section: state.section,
+                                    type: state.type,
+                                  ),
+                                );
+                            bottomSheet(context, true);
+                          },
                           child: SemesterItem(semNo: index + 1),
                         );
                       },

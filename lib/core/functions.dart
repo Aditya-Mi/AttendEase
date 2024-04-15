@@ -1,4 +1,9 @@
+import 'dart:math';
+
+import 'package:attendease/core/app_colors.dart';
 import 'package:attendease/models/class.dart';
+import 'package:attendease/screens/bottom_sheet_screen.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 String convert24HourTo12Hour(String time24Hour) {
@@ -113,4 +118,79 @@ String getCurrentDate() {
 String getNextDay(String currentDate) {
   DateTime nextDay = DateTime.parse(currentDate).add(const Duration(days: 1));
   return '${nextDay.year}-${nextDay.month.toString().padLeft(2, '0')}-${nextDay.day.toString().padLeft(2, '0')}';
+}
+
+int mapSemesterToYear(int input) {
+  // Divide the input by 2 and round up to get the desired value
+  return ((input + 1) / 2).ceil();
+}
+
+String mapInputToValue(int input) {
+  switch (input) {
+    case 1:
+      return 'st';
+    case 2:
+      return 'nd';
+    case 3:
+      return 'rd';
+    case 4:
+      return 'th';
+    default:
+      return 'Invalid input';
+  }
+}
+
+String generateRandomNumber() {
+  Random random = Random();
+  String number = '';
+  for (int i = 0; i < 10; i++) {
+    number += random.nextInt(10).toString();
+  }
+  return number;
+}
+
+void bottomSheet(BuildContext context, bool isRecordScreen1) {
+  showModalBottomSheet<dynamic>(
+      context: context,
+      backgroundColor: AppColors.bg100,
+      builder: (BuildContext context) {
+        return BottomSheetScreen(
+          isRecordScreen1: isRecordScreen1,
+        );
+      });
+}
+
+int getMonthNumber(String monthName) {
+  // Convert the month name to lowercase for case-insensitive comparison
+  String lowercaseMonthName = monthName.toLowerCase();
+
+  switch (lowercaseMonthName) {
+    case 'january':
+      return 1;
+    case 'february':
+      return 2;
+    case 'march':
+      return 3;
+    case 'april':
+      return 4;
+    case 'may':
+      return 5;
+    case 'june':
+      return 6;
+    case 'july':
+      return 7;
+    case 'august':
+      return 8;
+    case 'september':
+      return 9;
+    case 'october':
+      return 10;
+    case 'november':
+      return 11;
+    case 'december':
+      return 12;
+    default:
+      // If the provided month name doesn't match any known month, return -1
+      return -1;
+  }
 }

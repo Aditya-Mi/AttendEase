@@ -16,13 +16,16 @@ class ClassRecord {
     );
   }
 
+  int getNoOfStudentsPresent() {
+    return students.where((student) => student.status == 'Present').length;
+  }
+
   double calculateAttendancePercentage() {
     if (students.isEmpty) {
       return 0.0;
     }
     int totalStudents = students.length;
-    int presentStudents =
-        students.where((student) => student.status == 'Present').length;
+    int presentStudents = getNoOfStudentsPresent();
     return (presentStudents / totalStudents) * 100;
   }
 }

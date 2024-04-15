@@ -17,7 +17,7 @@ class AuthRepository {
     required String password,
   }) async {
     try {
-      final url = Uri.parse('$BASE_URL/user/auth/login');
+      final url = Uri.https(BASE_URL, '/api/v1/user/auth/login');
       final response = await http.post(
         url,
         body: jsonEncode({'username': username, 'password': password}),

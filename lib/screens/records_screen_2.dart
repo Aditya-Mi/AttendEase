@@ -1,54 +1,61 @@
 import 'package:attendease/core/app_colors.dart';
+import 'package:attendease/core/app_string.dart';
 import 'package:attendease/core/app_text.dart';
+import 'package:attendease/core/functions.dart';
 import 'package:attendease/core/widgets/title_item.dart';
+import 'package:attendease/providers/filter_provider.dart';
 import 'package:attendease/screens/list_of_students_screen.dart';
 import 'package:attendease/widgets/attendance_item.dart';
 import 'package:attendease/widgets/custom_drop_down.dart';
 import 'package:attendease/widgets/search_widget.dart';
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-class RecordsScreen2 extends StatefulWidget {
+class RecordsScreen2 extends ConsumerStatefulWidget {
   const RecordsScreen2({super.key});
 
   @override
-  State<RecordsScreen2> createState() => _RecordsScreen2State();
+  ConsumerState<RecordsScreen2> createState() => _RecordsScreen2State();
 }
 
-class _RecordsScreen2State extends State<RecordsScreen2> {
+class _RecordsScreen2State extends ConsumerState<RecordsScreen2> {
   bool _isSearching = false;
-  List<String> months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
-  ];
+
   final List<String> years = [];
   int currentYear = 0;
   int currentMonth = 0;
   int currentDay = 0;
   int noOfDays = 0;
+  late DateTime _focusDate;
   late String _selectedMonth;
   late String _selectedYear;
+  late int _selectedDay;
+  final EasyInfiniteDateTimelineController _easyInfiniteDateTimelineController =
+      EasyInfiniteDateTimelineController();
 
   void onMonthChange(String? value) {
     setState(() {
       _selectedMonth = value!;
+      _focusDate = DateTime(
+        int.parse(_selectedYear),
+        getMonthNumber(_selectedMonth),
+        _selectedDay,
+      );
+      _easyInfiniteDateTimelineController.jumpToFocusDate();
     });
   }
 
   void onYearChange(String? value) {
     setState(() {
       _selectedYear = value!;
+      _focusDate = DateTime(
+        int.parse(_selectedYear),
+        getMonthNumber(_selectedMonth),
+        _selectedDay,
+      );
+      _easyInfiniteDateTimelineController.jumpToFocusDate();
     });
   }
 
@@ -61,14 +68,17 @@ class _RecordsScreen2State extends State<RecordsScreen2> {
     currentMonth = currentDate.month;
     _selectedYear = DateFormat.y().format(currentDate);
     currentYear = currentDate.year;
+    _selectedDay = currentDay;
     noOfDays = DateUtils.getDaysInMonth(currentYear, currentMonth);
     for (int i = currentYear - 10; i <= currentYear; i++) {
       years.add(i.toString());
     }
+    _focusDate = DateTime(currentYear, currentMonth, currentDay);
   }
 
   @override
   Widget build(BuildContext context) {
+    final filters = ref.watch(filterProvider);
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.bg200,
@@ -130,6 +140,14 @@ class _RecordsScreen2State extends State<RecordsScreen2> {
         body: Column(
           children: [
             EasyInfiniteDateTimeLine(
+              controller: _easyInfiniteDateTimelineController,
+              selectionMode: const SelectionMode.autoCenter(),
+              onDateChange: (selectedDate) {
+                setState(() {
+                  _focusDate = selectedDate;
+                  _selectedDay = selectedDate.day;
+                });
+              },
               showTimelineHeader: false,
               dayProps: EasyDayProps(
                 width: 82,
@@ -149,17 +167,8 @@ class _RecordsScreen2State extends State<RecordsScreen2> {
                     ),
                   ),
                 ),
-                inactiveDayStyle: DayStyle(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    border: Border(
-                      right: BorderSide(color: AppColors.dateBorderColor),
-                    ),
-                  ),
-                  monthStrStyle: MyAppTypography.body4,
-                  dayStrStyle: MyAppTypography.body4,
-                  dayNumStyle: MyAppTypography.body2.copyWith(fontSize: 20),
-                ),
+                inactiveDayStyle: todayDayStyle(),
+                todayStyle: todayDayStyle(),
               ),
               timeLineProps: EasyTimeLineProps(
                 separatorPadding: 0,
@@ -167,13 +176,26 @@ class _RecordsScreen2State extends State<RecordsScreen2> {
                 decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
-                        blurRadius: 4, color: Colors.black.withOpacity(0.12)),
+                      blurRadius: 4,
+                      color: Colors.black.withOpacity(0.12),
+                    ),
                   ],
                 ),
               ),
-              firstDate: DateTime(currentYear, currentMonth, 1),
-              focusDate: DateTime(currentYear, currentMonth, currentDay),
-              lastDate: DateTime(currentYear, currentMonth, noOfDays),
+              firstDate: DateTime(
+                int.parse(_selectedYear),
+                getMonthNumber(_selectedMonth),
+                1,
+              ),
+              focusDate: _focusDate,
+              lastDate: DateTime(
+                int.parse(_selectedYear),
+                getMonthNumber(_selectedMonth),
+                DateUtils.getDaysInMonth(
+                  int.parse(_selectedYear),
+                  getMonthNumber(_selectedMonth),
+                ),
+              ),
             ),
             Container(
               padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 21),
@@ -186,14 +208,19 @@ class _RecordsScreen2State extends State<RecordsScreen2> {
               child: Row(
                 children: [
                   Text(
-                    'Theory.ECE.1E7',
+                    '${filters.type} . ${reverseBranchMap[filters.branch]} . ${filters.section}',
                     style: MyAppTypography.body4,
                   ),
                   const Spacer(),
-                  Text(
-                    'Change',
-                    style: MyAppTypography.textStyle(
-                        color: AppColors.primary100, size: 12),
+                  GestureDetector(
+                    onTap: () {
+                      bottomSheet(context, false);
+                    },
+                    child: Text(
+                      'Change',
+                      style: MyAppTypography.textStyle(
+                          color: AppColors.primary100, size: 12),
+                    ),
                   ),
                   const SizedBox(
                     width: 8,
@@ -230,11 +257,11 @@ class _RecordsScreen2State extends State<RecordsScreen2> {
                 child: ListView.separated(
                   itemBuilder: (context, index) {
                     return GestureDetector(
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const ListOfStudentsScreen(),
-                        ),
-                      ),
+                      // onTap: () => Navigator.of(context).push(
+                      //   MaterialPageRoute(
+                      //     builder: (context) => const ListOfStudentsScreen(),
+                      //   ),
+                      // ),
                       child: const AttendanceItem(
                         subjectName: 'Microwave Engineering',
                         classType: 'Theory',
@@ -257,6 +284,20 @@ class _RecordsScreen2State extends State<RecordsScreen2> {
           ],
         ),
       ),
+    );
+  }
+
+  DayStyle todayDayStyle() {
+    return DayStyle(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          right: BorderSide(color: AppColors.dateBorderColor),
+        ),
+      ),
+      monthStrStyle: MyAppTypography.body4,
+      dayStrStyle: MyAppTypography.body4,
+      dayNumStyle: MyAppTypography.body2.copyWith(fontSize: 20),
     );
   }
 }

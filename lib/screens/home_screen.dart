@@ -92,23 +92,40 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         color: AppColors.bg200,
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: ListView.separated(
-                        itemBuilder: (context, index) {
-                          return UpcomingClassItem(
-                            kClass: classesOnCurrentDay[index],
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 6, horizontal: 60),
-                            child: CustomDivider(
-                              color: AppColors.primary200.withOpacity(0.25),
+                      child: classesOnCurrentDay.isEmpty
+                          ? Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset('assets/images/empty.png'),
+                                  Text(
+                                    'No more classes today',
+                                    style: MyAppTypography.body2.copyWith(
+                                      color: const Color(0xffCCCCCC),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            )
+                          : ListView.separated(
+                              itemBuilder: (context, index) {
+                                return UpcomingClassItem(
+                                  kClass: classesOnCurrentDay[index],
+                                );
+                              },
+                              separatorBuilder:
+                                  (BuildContext context, int index) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 6, horizontal: 60),
+                                  child: CustomDivider(
+                                    color:
+                                        AppColors.primary200.withOpacity(0.25),
+                                  ),
+                                );
+                              },
+                              itemCount: classesOnCurrentDay.length,
                             ),
-                          );
-                        },
-                        itemCount: classesOnCurrentDay.length,
-                      ),
                     ),
                   ),
                   const SizedBox(

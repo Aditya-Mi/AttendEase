@@ -102,6 +102,7 @@ class _SuccessScreenState extends State<SuccessScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             FunctionButton(
+                              function: () {},
                               icon: Icons.share_outlined,
                               text: text1('Share'),
                             ),
@@ -109,6 +110,7 @@ class _SuccessScreenState extends State<SuccessScreen> {
                               width: 41,
                             ),
                             FunctionButton(
+                              function: () {},
                               icon: Icons.edit_outlined,
                               text: text1('Edit'),
                             ),
@@ -116,6 +118,9 @@ class _SuccessScreenState extends State<SuccessScreen> {
                               width: 32,
                             ),
                             FunctionButton(
+                              function: () {
+                                Navigator.of(context).pop();
+                              },
                               icon: Icons.keyboard_return,
                               text: text1('Return Home'),
                             ),

@@ -1,6 +1,7 @@
 import 'package:attendease/core/functions.dart';
 import 'package:attendease/models/class.dart';
 import 'package:attendease/models/class_record.dart';
+import 'package:attendease/models/single_class_record.dart';
 import 'package:attendease/repositories/class_repository.dart';
 import 'package:attendease/repositories/shared_preferences_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,7 +17,26 @@ final classProvider = FutureProvider<List<Class>>((ref) {
   return classRepository.getAllClasses();
 });
 
-final classRecordProvider = FutureProvider<List<ClassRecord>>((ref) async {
+final singleClassRecordProvider =
+    FutureProvider.family<ClassRecord, List<String>>((ref, list) {
+  final classRepository = ref.read(classRepositoryProvider);
+  return classRepository.getSingleRecord(list[0], list[1], list[2]);
+});
+
+final singleClassAttendanceRecords =
+    FutureProvider.family<SingleClassRecord, String>((ref, classId) {
+  final classRepository = ref.read(classRepositoryProvider);
+  return classRepository.getStudentsAttendance(classId);
+});
+
+// final clasRecordProvider =
+//     FutureProvider.family<ClassRecord, List<String>>((ref, list) {
+//   final classRepository = ref.read(classRepositoryProvider);
+//   return classRepository.getSingleRecord(list[0], list[1], list[2]);
+// });
+
+final currentClassRecordProvider =
+    FutureProvider<List<ClassRecord>>((ref) async {
   final classes = await ref.watch(classProvider.future);
   List<Class> classesOnCurrentDay = classes.where((classData) {
     return classData.dayOfWeek.contains(getCurrentDay());

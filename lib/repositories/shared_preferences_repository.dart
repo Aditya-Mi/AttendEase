@@ -10,14 +10,12 @@ class SharedPreferencesRepository {
     prefs.setString(USER_KEY, user);
   }
 
-  Future<User?> getUser() async {
+  Future<User> getUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? studentJson = prefs.getString(USER_KEY);
-    if (studentJson != null) {
-      User user = User.fromJson(jsonDecode(studentJson)['user']);
-      return user;
-    }
-    return null;
+    String? userJson = prefs.getString(USER_KEY);
+    Map userData = jsonDecode(userJson!)['user'];
+    User user = User.fromJson(userData);
+    return user;
   }
 
   Future<String> getUserId() async {

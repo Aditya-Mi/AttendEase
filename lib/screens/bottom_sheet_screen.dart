@@ -1,17 +1,21 @@
 import 'package:attendease/core/app_colors.dart';
+import 'package:attendease/core/app_string.dart';
 import 'package:attendease/core/app_text.dart';
 import 'package:attendease/core/widgets/title_item.dart';
+import 'package:attendease/models/filters.dart';
+import 'package:attendease/providers/filter_provider.dart';
 import 'package:attendease/screens/records_screen_2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class BottomSheetScreen extends StatefulWidget {
-  const BottomSheetScreen({super.key});
-
+class BottomSheetScreen extends ConsumerStatefulWidget {
+  final bool isRecordScreen1;
+  const BottomSheetScreen({super.key, required this.isRecordScreen1});
   @override
-  State<BottomSheetScreen> createState() => _BottomSheetScreenState();
+  ConsumerState<BottomSheetScreen> createState() => _BottomSheetScreenState();
 }
 
-class _BottomSheetScreenState extends State<BottomSheetScreen> {
+class _BottomSheetScreenState extends ConsumerState<BottomSheetScreen> {
   final PageController _pageController = PageController();
   @override
   void dispose() {
@@ -91,15 +95,24 @@ class _BottomSheetScreenState extends State<BottomSheetScreen> {
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
-                      onTap: () => _pageController.animateToPage(
-                        1,
-                        duration: const Duration(milliseconds: 400),
-                        curve: Curves.easeInOut,
-                      ),
-                      child: const Item(text: 'ECE'),
+                      onTap: () {
+                        ref.read(filterProvider.notifier).update(
+                              (state) => Filters(
+                                  semester: state.semester,
+                                  section: state.section,
+                                  branch: branchMap[branches[index]],
+                                  type: 'Theory'),
+                            );
+                        _pageController.animateToPage(
+                          1,
+                          duration: const Duration(milliseconds: 400),
+                          curve: Curves.easeInOut,
+                        );
+                      },
+                      child: Item(text: branches[index]),
                     );
                   },
-                  itemCount: 5,
+                  itemCount: branches.length,
                 ),
               ),
               Container(
@@ -136,15 +149,24 @@ class _BottomSheetScreenState extends State<BottomSheetScreen> {
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
-                      onTap: () => _pageController.animateToPage(
-                        1,
-                        duration: const Duration(milliseconds: 400),
-                        curve: Curves.easeInOut,
-                      ),
-                      child: const Item(text: 'ECE'),
+                      onTap: () {
+                        ref.read(filterProvider.notifier).update(
+                              (state) => Filters(
+                                  semester: state.semester,
+                                  section: state.section,
+                                  branch: branchMap[branches[index]],
+                                  type: 'Practical'),
+                            );
+                        _pageController.animateToPage(
+                          1,
+                          duration: const Duration(milliseconds: 400),
+                          curve: Curves.easeInOut,
+                        );
+                      },
+                      child: Item(text: branches[index]),
                     );
                   },
-                  itemCount: 3,
+                  itemCount: branches.length,
                 ),
               ),
             ],
@@ -187,15 +209,29 @@ class _BottomSheetScreenState extends State<BottomSheetScreen> {
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const RecordsScreen2(),
-                        ),
-                      ),
-                      child: const Item(text: 'ECE'),
+                      onTap: () {
+                        ref.read(filterProvider.notifier).update(
+                              (state) => Filters(
+                                  semester: state.semester,
+                                  section: sections[index],
+                                  branch: state.branch,
+                                  type: state.type),
+                            );
+                        if (widget.isRecordScreen1) {
+                          Navigator.of(context).pop();
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const RecordsScreen2(),
+                            ),
+                          );
+                        } else {
+                          Navigator.of(context).pop();
+                        }
+                      },
+                      child: Item(text: sections[index]),
                     );
                   },
-                  itemCount: 5,
+                  itemCount: sections.length,
                 ),
               ),
             ],

@@ -6,7 +6,7 @@ class ProgressBar extends StatelessWidget {
   const ProgressBar({super.key, required this.progress});
 
   double getWidth() {
-    return (146 / 100) * 58;
+    return (146 / 100) * progress;
   }
 
   @override

@@ -42,6 +42,7 @@ dependencies:
   shared_preferences: ^2.2.3
   timeline_tile: ^2.0.0
   flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.3.11
 
 dev_dependencies:
   flutter_lints: ^2.0.0
@@ -54,6 +55,16 @@ flutter_launcher_icons:
   image_path: "assets/icons/logo.png"
   adaptive_icon_background: "#ffffff"
   min_sdk_android: 21 
+
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: "assets/icons/logo.png"
+
+  android_12:
+    color: "#FFFFFF"
+    image: "assets/icons/logo.png"
+  
+  web: false
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -71,6 +82,8 @@ flutter:
     - assets/images/no_current_class.png
     - assets/images/empty.png
     - assets/icons/logo.png
+    - assets/images/smile.png
+    - assets/images/sad.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
