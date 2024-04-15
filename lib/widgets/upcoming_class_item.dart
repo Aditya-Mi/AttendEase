@@ -36,23 +36,31 @@ class UpcomingClassItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Flexible(
-                  flex: 3,
+                Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      RichText(
-                        text: TextSpan(
-                          text: kClass.topic,
-                          style: MyAppTypography.body5,
-                          children: [
-                            TextSpan(
-                              text: ' (${kClass.type})',
+                      Row(
+                        children: [
+                          Flexible(
+                            flex: 3,
+                            fit: FlexFit.loose,
+                            child: Text(
+                              kClass.topic,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: MyAppTypography.body5,
+                            ),
+                          ),
+                          Flexible(
+                            flex: 1,
+                            child: Text(
+                              ' (${kClass.type})',
                               style: MyAppTypography.body3,
                             ),
-                          ],
-                        ),
+                          )
+                        ],
                       ),
                       Text(
                         '${convert24HourTo12Hour(kClass.startTime)} - ${convert24HourTo12Hour(kClass.endTime)}',
@@ -65,12 +73,12 @@ class UpcomingClassItem extends StatelessWidget {
                     ],
                   ),
                 ),
-                Flexible(
-                  flex: 1,
-                  child: Text(
-                    kClass.section,
-                    style: MyAppTypography.body5,
-                  ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  kClass.section,
+                  style: MyAppTypography.body5,
                 ),
               ],
             ),

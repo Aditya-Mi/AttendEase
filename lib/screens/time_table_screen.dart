@@ -43,7 +43,7 @@ class _TimeTableScreenState extends ConsumerState<TimeTableScreen>
               const SizedBox(height: 20),
               Container(
                 height: 40,
-                margin: const EdgeInsets.symmetric(horizontal: 15),
+                margin: const EdgeInsets.symmetric(horizontal: 5),
                 decoration: BoxDecoration(
                   color: AppColors.bg200,
                   borderRadius: BorderRadius.circular(15),
@@ -56,6 +56,8 @@ class _TimeTableScreenState extends ConsumerState<TimeTableScreen>
                   ],
                 ),
                 child: TabBar(
+                  padding: const EdgeInsets.all(0),
+                  labelPadding: const EdgeInsets.all(0),
                   indicatorSize: TabBarIndicatorSize.tab,
                   controller: _tabController,
                   indicator: BoxDecoration(
@@ -64,10 +66,10 @@ class _TimeTableScreenState extends ConsumerState<TimeTableScreen>
                   ),
                   labelStyle: MyAppTypography.textStyle(
                     color: AppColors.bg100,
-                    size: 15,
+                    size: 13,
                   ),
                   unselectedLabelStyle:
-                      MyAppTypography.body3.copyWith(fontSize: 15),
+                      MyAppTypography.body3.copyWith(fontSize: 13),
                   tabs: const [
                     Tab(text: 'Mon'),
                     Tab(text: 'Tue'),

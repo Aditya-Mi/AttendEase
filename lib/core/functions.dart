@@ -1,3 +1,4 @@
+import 'package:attendease/models/class.dart';
 import 'package:intl/intl.dart';
 
 String convert24HourTo12Hour(String time24Hour) {
@@ -77,4 +78,39 @@ String getCurrentDay() {
     default:
       return 'Monday';
   }
+}
+
+List<Class> filterClasses(List<Class> allClasses) {
+  // Get the current time
+  DateTime currentTime = DateTime.now();
+
+  // Filter the list of classes
+  List<Class> filteredClasses = allClasses.where((classData) {
+    // Parse the endTime string to a DateTime object
+    DateTime endTime = DateFormat('HH:mm').parse(classData.endTime);
+
+    // Check if the endTime is before the current time
+    return endTime.isBefore(currentTime);
+  }).toList();
+
+  return filteredClasses;
+}
+
+List<String> getClassIds(List<Class> classes) {
+  // Map each class to its id and convert to a list
+  List<String> classIds = classes.map((classData) => classData.sId).toList();
+  return classIds;
+}
+
+String getCurrentDate() {
+  DateTime now = DateTime.now();
+  String year = now.year.toString();
+  String month = now.month.toString().padLeft(2, '0');
+  String day = now.day.toString().padLeft(2, '0');
+  return '$year-$month-$day';
+}
+
+String getNextDay(String currentDate) {
+  DateTime nextDay = DateTime.parse(currentDate).add(const Duration(days: 1));
+  return '${nextDay.year}-${nextDay.month.toString().padLeft(2, '0')}-${nextDay.day.toString().padLeft(2, '0')}';
 }

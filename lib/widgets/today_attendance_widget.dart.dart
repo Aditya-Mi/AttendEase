@@ -1,27 +1,24 @@
 import 'package:attendease/core/app_colors.dart';
 import 'package:attendease/core/app_shadow.dart';
 import 'package:attendease/core/app_text.dart';
+import 'package:attendease/core/functions.dart';
 import 'package:attendease/core/widgets/progress_bar.dart';
+import 'package:attendease/models/class.dart';
+import 'package:attendease/models/class_record.dart';
 import 'package:flutter/material.dart';
 
 class TodayAttendanceItem extends StatelessWidget {
-  final String subjectName;
-  final String classType;
-  final String timings;
-  final String roomNumber;
-  final String section;
-  final String attendance;
-  const TodayAttendanceItem(
-      {super.key,
-      required this.subjectName,
-      required this.classType,
-      required this.timings,
-      required this.roomNumber,
-      required this.section,
-      required this.attendance});
+  final Class kClass;
+  final ClassRecord classRecord;
+  const TodayAttendanceItem({
+    super.key,
+    required this.kClass,
+    required this.classRecord,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final attendance = classRecord.calculateAttendancePercentage();
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 16),
       width: 300,
@@ -42,7 +39,7 @@ class TodayAttendanceItem extends StatelessWidget {
               Flexible(
                 fit: FlexFit.loose,
                 child: Text(
-                  subjectName,
+                  kClass.topic,
                   style: MyAppTypography.body5,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -52,28 +49,28 @@ class TodayAttendanceItem extends StatelessWidget {
                 width: 20,
               ),
               Text(
-                section,
+                kClass.section,
                 style: MyAppTypography.body5,
               ),
             ],
           ),
           Text(
-            '($classType)',
+            '(${kClass.type})',
             style: MyAppTypography.body3,
           ),
           const Spacer(),
           Text(
-            timings,
+            '${convert24HourTo12Hour(kClass.startTime)} - ${convert24HourTo12Hour(kClass.endTime)}',
             style: MyAppTypography.body3,
           ),
           Text(
-            'Room Number $roomNumber',
+            'Room Number ${kClass.roomNo}',
             style: MyAppTypography.body3,
           ),
           Row(
             children: [
               ProgressBar(
-                progress: double.parse(attendance),
+                progress: attendance,
               ),
               const SizedBox(
                 width: 10,
