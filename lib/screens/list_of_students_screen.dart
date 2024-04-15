@@ -87,9 +87,10 @@ class _ListOfStudentsScreenState extends State<ListOfStudentsScreen>
                 indicator: const BoxDecoration(
                   color: AppColors.primary100,
                 ),
-                labelStyle: AppText.textStyle(color: AppColors.bg100, size: 18),
+                labelStyle:
+                    MyAppTypography.textStyle(color: AppColors.bg100, size: 18),
                 unselectedLabelStyle:
-                    AppText.textStyle(color: AppColors.text100, size: 18),
+                    MyAppTypography.body2.copyWith(fontSize: 18),
                 tabs: const [
                   Tab(
                     text: 'Present',
@@ -146,10 +147,7 @@ class StudentsList extends StatelessWidget {
           ),
           child: Text(
             'Number of Students $title : $noOfStudents',
-            style: AppText.textStyle(
-              color: AppColors.text200,
-              size: 16.18,
-            ),
+            style: MyAppTypography.body4,
           ),
         ),
         Expanded(

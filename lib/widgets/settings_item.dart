@@ -41,12 +41,9 @@ class SettingsItem extends StatelessWidget {
             size: 18,
           ),
           title: Text(title),
-          titleTextStyle:
-              AppText.textStyle(size: 16.18, color: AppColors.text100),
-          subtitleTextStyle: AppText.textStyle(
-            size: 12.94,
-            color: AppColors.text100.withOpacity(0.5),
-          ),
+          titleTextStyle: MyAppTypography.body2,
+          subtitleTextStyle: MyAppTypography.body1
+              .copyWith(color: AppColors.text100.withOpacity(0.5)),
           subtitle: Text(subTitle),
         ),
       ),

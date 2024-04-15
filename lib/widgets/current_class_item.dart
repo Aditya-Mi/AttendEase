@@ -1,22 +1,18 @@
 import 'package:attendease/core/app_colors.dart';
+import 'package:attendease/core/app_shadow.dart';
 import 'package:attendease/core/app_text.dart';
+import 'package:attendease/core/functions.dart';
 import 'package:attendease/core/widgets/circle.dart';
+import 'package:attendease/models/class.dart';
 import 'package:attendease/screens/take_attendance_screen.dart';
 import 'package:flutter/material.dart';
 
 class CurrentClassItem extends StatelessWidget {
-  final String subjectName;
-  final String classType;
-  final String timings;
-  final String roomNumber;
-  final String section;
-  const CurrentClassItem(
-      {super.key,
-      required this.subjectName,
-      required this.classType,
-      required this.timings,
-      required this.roomNumber,
-      required this.section});
+  final Class kClass;
+  const CurrentClassItem({
+    super.key,
+    required this.kClass,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +23,7 @@ class CurrentClassItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         color: AppColors.bg200,
         boxShadow: [
-          BoxShadow(
-            blurRadius: 4,
-            offset: const Offset(0, 4),
-            color: Colors.black.withOpacity(0.15),
-          ),
+          MyAppBoxShadow.myCustomBoxShadow(Colors.black.withOpacity(0.15)),
         ],
       ),
       child: Stack(
@@ -44,45 +36,30 @@ class CurrentClassItem extends StatelessWidget {
                   Flexible(
                     fit: FlexFit.loose,
                     child: Text(
-                      subjectName,
-                      style: AppText.textStyle(
-                        color: AppColors.text100,
-                        size: 16.38,
-                      ),
+                      kClass.topic,
+                      style: MyAppTypography.body2,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   Text(
-                    ' ($classType)',
-                    style: AppText.textStyle(
-                      color: AppColors.text200,
-                      size: 12.94,
-                    ),
+                    ' (${kClass.type})',
+                    style: MyAppTypography.body3,
                   ),
                   const Spacer(),
                   Text(
-                    section,
-                    style: AppText.textStyle(
-                      color: AppColors.text100,
-                      size: 16.38,
-                    ),
+                    kClass.section,
+                    style: MyAppTypography.body5,
                   ),
                 ],
               ),
               Text(
-                timings,
-                style: AppText.textStyle(
-                  color: AppColors.text200,
-                  size: 12.94,
-                ),
+                '${convert24HourTo12Hour(kClass.startTime)} - ${convert24HourTo12Hour(kClass.endTime)}',
+                style: MyAppTypography.body3,
               ),
               Text(
-                'Room Number $roomNumber',
-                style: AppText.textStyle(
-                  color: AppColors.text200,
-                  size: 12.94,
-                ),
+                'Room Number ${kClass.roomNo}',
+                style: MyAppTypography.body3,
               ),
               const Spacer(),
               Row(
@@ -96,7 +73,7 @@ class CurrentClassItem extends StatelessWidget {
                   ),
                   Text(
                     'LIVE',
-                    style: AppText.textStyle(
+                    style: MyAppTypography.textStyle(
                         color: const Color(0xffC44545), size: 10),
                   ),
                 ],
@@ -119,19 +96,13 @@ class CurrentClassItem extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                   color: AppColors.primary100,
                   boxShadow: [
-                    BoxShadow(
-                      blurRadius: 4,
-                      offset: const Offset(0, 4),
-                      color: Colors.black.withOpacity(0.08),
-                    ),
+                    MyAppBoxShadow.myCustomBoxShadow(
+                        Colors.black.withOpacity(0.08)),
                   ],
                 ),
                 child: Text(
                   'Take Attendance',
-                  style: AppText.textStyle(
-                    color: Colors.white,
-                    size: 16.18,
-                  ),
+                  style: MyAppTypography.body2.copyWith(color: AppColors.bg100),
                 ),
               ),
             ),

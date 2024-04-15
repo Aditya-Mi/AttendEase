@@ -136,8 +136,8 @@ class _SuccessScreenState extends State<SuccessScreen> {
                   ),
                   Text(
                     'Powered by AttendEase',
-                    style: AppText.textStyle(
-                        color: const Color(0xff969696), size: 12.94),
+                    style: MyAppTypography.body1
+                        .copyWith(color: const Color(0xff969696)),
                   ),
                 ],
               ),
@@ -161,19 +161,20 @@ class _SuccessScreenState extends State<SuccessScreen> {
                   children: [
                     Text(
                       'Attendance Recorded',
-                      style: AppText.textStyle(color: Colors.white, size: 20),
+                      style: MyAppTypography.textStyle(
+                          color: Colors.white, size: 20),
                     ),
                     Text(
                       'Successfully',
-                      style: AppText.textStyle(color: Colors.white, size: 27)
+                      style: MyAppTypography.textStyle(
+                              color: Colors.white, size: 27)
                           .copyWith(fontWeight: FontWeight.bold),
                     ),
                     _isCollapse ? const Spacer() : const SizedBox(),
                     _isCollapse
                         ? Text(
                             '09 Mar 2024, 12:45 pm',
-                            style: AppText.textStyle(
-                                color: AppColors.bg200, size: 12.95),
+                            style: MyAppTypography.body3,
                           )
                         : const SizedBox(),
                     _isCollapse
@@ -194,22 +195,22 @@ class _SuccessScreenState extends State<SuccessScreen> {
   Widget text1(String text) {
     return Text(
       text,
-      style: AppText.textStyle(color: AppColors.text200, size: 12.94),
+      style: MyAppTypography.body3,
     );
   }
 
   Widget text2(String text) {
     return Text(
       text,
-      style: AppText.textStyle(color: AppColors.text100, size: 16.18),
+      style: MyAppTypography.body2,
     );
   }
 
   Widget text3(String text) {
     return Text(
       text,
-      style: AppText.textStyle(color: AppColors.text100, size: 17)
-          .copyWith(fontWeight: FontWeight.w400),
+      style: MyAppTypography.body2
+          .copyWith(fontWeight: FontWeight.w400, fontSize: 17),
     );
   }
 }

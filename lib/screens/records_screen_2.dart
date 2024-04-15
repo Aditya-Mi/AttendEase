@@ -137,11 +137,11 @@ class _RecordsScreen2State extends State<RecordsScreen2> {
                 dayStructure: DayStructure.dayStrDayNumMonth,
                 activeDayStyle: DayStyle(
                   monthStrStyle:
-                      AppText.textStyle(color: AppColors.bg200, size: 16.18),
+                      MyAppTypography.body2.copyWith(color: AppColors.bg200),
                   dayStrStyle:
-                      AppText.textStyle(color: AppColors.bg200, size: 16.18),
-                  dayNumStyle:
-                      AppText.textStyle(color: AppColors.bg100, size: 20),
+                      MyAppTypography.body2.copyWith(color: AppColors.bg200),
+                  dayNumStyle: MyAppTypography.textStyle(
+                      color: AppColors.bg100, size: 20),
                   decoration: const BoxDecoration(
                     color: AppColors.primary100,
                     border: Border(
@@ -156,12 +156,9 @@ class _RecordsScreen2State extends State<RecordsScreen2> {
                       right: BorderSide(color: AppColors.dateBorderColor),
                     ),
                   ),
-                  monthStrStyle:
-                      AppText.textStyle(color: AppColors.text200, size: 16.18),
-                  dayStrStyle:
-                      AppText.textStyle(color: AppColors.text200, size: 16.18),
-                  dayNumStyle:
-                      AppText.textStyle(color: AppColors.text100, size: 20),
+                  monthStrStyle: MyAppTypography.body4,
+                  dayStrStyle: MyAppTypography.body4,
+                  dayNumStyle: MyAppTypography.body2.copyWith(fontSize: 20),
                 ),
               ),
               timeLineProps: EasyTimeLineProps(
@@ -190,15 +187,12 @@ class _RecordsScreen2State extends State<RecordsScreen2> {
                 children: [
                   Text(
                     'Theory.ECE.1E7',
-                    style: AppText.textStyle(
-                      color: AppColors.text200,
-                      size: 16.18,
-                    ),
+                    style: MyAppTypography.body4,
                   ),
                   const Spacer(),
                   Text(
                     'Change',
-                    style: AppText.textStyle(
+                    style: MyAppTypography.textStyle(
                         color: AppColors.primary100, size: 12),
                   ),
                   const SizedBox(

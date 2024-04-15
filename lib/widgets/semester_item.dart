@@ -23,10 +23,7 @@ class SemesterItem extends StatelessWidget {
       ),
       child: Text(
         'Sem $semNo',
-        style: AppText.textStyle(
-          color: AppColors.text100,
-          size: 20,
-        ),
+        style: MyAppTypography.body2.copyWith(fontSize: 20),
       ),
     );
   }

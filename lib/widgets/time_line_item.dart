@@ -1,6 +1,9 @@
 import 'package:attendease/core/app_colors.dart';
+import 'package:attendease/core/app_shadow.dart';
 import 'package:attendease/core/app_text.dart';
+import 'package:attendease/core/functions.dart';
 import 'package:attendease/core/widgets/custom_divider.dart';
+import 'package:attendease/models/class.dart';
 import 'package:flutter/material.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
@@ -8,11 +11,17 @@ class TimeLineItem extends StatelessWidget {
   final bool isFirst;
   final bool isLast;
   final bool isBreak;
+  final String startTime;
+  final String endTime;
+  final Class? kClass;
   const TimeLineItem(
       {super.key,
       required this.isFirst,
       required this.isLast,
-      required this.isBreak});
+      required this.isBreak,
+      this.kClass,
+      required this.endTime,
+      required this.startTime});
 
   Widget getItem() {
     if (isFirst) {
@@ -26,19 +35,32 @@ class TimeLineItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(5),
           color: AppColors.bg200,
           boxShadow: [
-            BoxShadow(
-              blurRadius: 4,
-              offset: const Offset(0, 4),
-              color: Colors.black.withOpacity(0.05),
-            ),
+            MyAppBoxShadow.myCustomBoxShadow(Colors.black.withOpacity(0.05)),
           ],
         ),
         child: Text(
           'Start',
-          style: AppText.textStyle(
-            color: AppColors.text100,
-            size: 16.38,
-          ),
+          style: MyAppTypography.body5,
+        ),
+      );
+    }
+    if (isLast) {
+      return Container(
+        margin: const EdgeInsets.symmetric(vertical: 25),
+        padding: const EdgeInsets.symmetric(
+          vertical: 10,
+        ),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: AppColors.bg200,
+          boxShadow: [
+            MyAppBoxShadow.myCustomBoxShadow(Colors.black.withOpacity(0.05)),
+          ],
+        ),
+        child: Text(
+          'Finish',
+          style: MyAppTypography.body5,
         ),
       );
     }
@@ -53,19 +75,12 @@ class TimeLineItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(5),
           color: AppColors.bg200,
           boxShadow: [
-            BoxShadow(
-              blurRadius: 4,
-              offset: const Offset(0, 4),
-              color: Colors.black.withOpacity(0.05),
-            ),
+            MyAppBoxShadow.myCustomBoxShadow(Colors.black.withOpacity(0.05)),
           ],
         ),
         child: Text(
           'Break',
-          style: AppText.textStyle(
-            color: AppColors.text100,
-            size: 16.38,
-          ),
+          style: MyAppTypography.body5,
         ),
       );
     }
@@ -76,56 +91,50 @@ class TimeLineItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
         color: AppColors.bg200,
         boxShadow: [
-          BoxShadow(
-            blurRadius: 4,
-            offset: const Offset(0, 4),
-            color: Colors.black.withOpacity(0.05),
-          ),
+          MyAppBoxShadow.myCustomBoxShadow(Colors.black.withOpacity(0.05)),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            'Microwave Engineering',
+            kClass!.topic,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: AppText.textStyle(
-              color: AppColors.text100,
-              size: 16.38,
-            ),
+            style: MyAppTypography.body5,
           ),
           Text(
-            '( Theory )',
-            style: AppText.textStyle(
-              color: AppColors.text200,
-              size: 12.94,
-            ),
+            '( ${kClass!.type} )',
+            style: MyAppTypography.body3,
           ),
           Text(
-            '8th Semester',
-            style: AppText.textStyle(
-              color: AppColors.text200,
-              size: 12.94,
-            ),
+            '${kClass!.semester}th Semester',
+            style: MyAppTypography.body3,
           ),
           Text(
-            'Room Number 405',
-            style: AppText.textStyle(
-              color: AppColors.text200,
-              size: 12.94,
-            ),
+            'Room Number ${kClass!.roomNo}',
+            style: MyAppTypography.body3,
           ),
           Text(
-            '8E7',
-            style: AppText.textStyle(
-              color: AppColors.text200,
-              size: 12.94,
-            ),
+            kClass!.section,
+            style: MyAppTypography.body3,
           ),
         ],
       ),
     );
+  }
+
+  String getTime() {
+    if (isFirst) {
+      return "${convert24HourTo12Hour(startTime)} - ${convert24HourTo12Hour(startTime)}";
+    }
+    if (isBreak) {
+      return "12:50 PM - 1:30 PM";
+    }
+    if (isLast) {
+      return "${convert24HourTo12Hour(endTime)} - ${convert24HourTo12Hour(endTime)}";
+    }
+    return '${convert24HourTo12Hour(kClass!.startTime)} - ${convert24HourTo12Hour(kClass!.endTime)}';
   }
 
   @override
@@ -146,17 +155,18 @@ class TimeLineItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              '12:45 pm - 01:45 pm',
-              style: AppText.textStyle(
-                color: AppColors.text200,
-                size: 12.94,
+            Flexible(
+              flex: 3,
+              child: Text(
+                getTime(),
+                style: MyAppTypography.body3,
               ),
             ),
             const SizedBox(
               width: 15,
             ),
-            Expanded(
+            Flexible(
+              flex: 5,
               child: Column(
                 children: [
                   const CustomDivider(

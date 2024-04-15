@@ -1,4 +1,5 @@
 import 'package:attendease/core/app_colors.dart';
+import 'package:attendease/core/app_shadow.dart';
 import 'package:attendease/core/app_text.dart';
 import 'package:flutter/material.dart';
 
@@ -13,16 +14,10 @@ class SearchWidget extends StatelessWidget {
     return Container(
       height: 37,
       width: double.infinity,
-      margin: const EdgeInsets.only(
-        right: 20,
-      ),
+      margin: const EdgeInsets.only(right: 20),
       decoration: BoxDecoration(
         boxShadow: [
-          BoxShadow(
-            blurRadius: 4,
-            offset: const Offset(0, 4),
-            color: Colors.black.withOpacity(0.1),
-          ),
+          MyAppBoxShadow.myCustomBoxShadow(Colors.black.withOpacity(0.10)),
         ],
       ),
       child: TextField(
@@ -36,8 +31,8 @@ class SearchWidget extends StatelessWidget {
             color: AppColors.text100,
           ),
           hintText: 'Search here',
-          hintStyle: AppText.textStyle(
-              color: AppColors.text200.withOpacity(0.5), size: 12.94),
+          hintStyle: MyAppTypography.body3
+              .copyWith(color: AppColors.text200.withOpacity(0.5)),
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
               borderSide: BorderSide.none),

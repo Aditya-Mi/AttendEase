@@ -1,4 +1,3 @@
-import 'package:attendease/core/app_colors.dart';
 import 'package:attendease/core/app_text.dart';
 import 'package:attendease/core/widgets/custom_divider.dart';
 import 'package:attendease/widgets/settings_item.dart';
@@ -31,34 +30,22 @@ class SettingsScreen extends StatelessWidget {
                   children: [
                     Text(
                       'Dr. Sudershan Kumar',
-                      style: AppText.textStyle(
-                        size: 18,
-                        color: AppColors.text100,
-                      ),
+                      style: MyAppTypography.body2.copyWith(fontSize: 18),
                     ),
                     const SizedBox(
                       height: 7,
                     ),
                     Text(
                       'Assistant Professor',
-                      style: AppText.textStyle(
-                        size: 16.18,
-                        color: AppColors.text200,
-                      ),
+                      style: MyAppTypography.body4,
                     ),
                     Text(
                       'ECE Department',
-                      style: AppText.textStyle(
-                        size: 16.18,
-                        color: AppColors.text200,
-                      ),
+                      style: MyAppTypography.body4,
                     ),
                     Text(
                       'Since 2016',
-                      style: AppText.textStyle(
-                        size: 16.18,
-                        color: AppColors.text200,
-                      ),
+                      style: MyAppTypography.body4,
                     ),
                   ],
                 ),

@@ -1,4 +1,5 @@
 import 'package:attendease/core/app_colors.dart';
+import 'package:attendease/core/app_shadow.dart';
 import 'package:attendease/core/app_text.dart';
 import 'package:flutter/material.dart';
 
@@ -59,17 +60,11 @@ class _TakeAttendanceItemState extends State<TakeAttendanceItem> {
                   children: [
                     Text(
                       'Shivang Singh',
-                      style: AppText.textStyle(
-                        color: AppColors.text100,
-                        size: 16.18,
-                      ),
+                      style: MyAppTypography.body2,
                     ),
                     Text(
                       '13214802820',
-                      style: AppText.textStyle(
-                        color: AppColors.text200,
-                        size: 12,
-                      ),
+                      style: MyAppTypography.body3.copyWith(fontSize: 12),
                     ),
                   ],
                 ),
@@ -81,18 +76,12 @@ class _TakeAttendanceItemState extends State<TakeAttendanceItem> {
                   children: [
                     Text(
                       '48%',
-                      style: AppText.textStyle(
-                        color: AppColors.text200,
-                        size: 12.94,
-                      ),
+                      style: MyAppTypography.body3,
                     ),
                     Text(
                       'Subject Attendance',
                       textAlign: TextAlign.center,
-                      style: AppText.textStyle(
-                        color: AppColors.text200,
-                        size: 12.94,
-                      ),
+                      style: MyAppTypography.body3,
                     ),
                   ],
                 ),
@@ -130,19 +119,14 @@ class _TakeAttendanceItemState extends State<TakeAttendanceItem> {
                         ? AppColors.undoButtonColor
                         : AppColors.primary100,
                     boxShadow: [
-                      BoxShadow(
-                        blurRadius: 4,
-                        offset: const Offset(0, 4),
-                        color: Colors.black.withOpacity(0.10),
-                      ),
+                      MyAppBoxShadow.myCustomBoxShadow(
+                          Colors.black.withOpacity(0.10)),
                     ],
                   ),
                   child: Text(
                     _isAbsent ? 'Undo' : 'Present',
-                    style: AppText.textStyle(
-                      color: Colors.white,
-                      size: 12.94,
-                    ),
+                    style:
+                        MyAppTypography.body3.copyWith(color: AppColors.bg100),
                   ),
                 ),
               ),
@@ -176,19 +160,14 @@ class _TakeAttendanceItemState extends State<TakeAttendanceItem> {
                         ? AppColors.undoButtonColor
                         : AppColors.absentButtonColor,
                     boxShadow: [
-                      BoxShadow(
-                        blurRadius: 4,
-                        offset: const Offset(0, 4),
-                        color: Colors.black.withOpacity(0.10),
-                      ),
+                      MyAppBoxShadow.myCustomBoxShadow(
+                          Colors.black.withOpacity(0.10)),
                     ],
                   ),
                   child: Text(
                     _isPresent ? 'Undo' : 'Absent',
-                    style: AppText.textStyle(
-                      color: Colors.white,
-                      size: 12.94,
-                    ),
+                    style:
+                        MyAppTypography.body3.copyWith(color: AppColors.bg100),
                   ),
                 ),
               ),

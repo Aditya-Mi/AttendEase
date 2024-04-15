@@ -1,128 +1,103 @@
 import 'package:attendease/core/app_colors.dart';
 import 'package:attendease/core/app_text.dart';
-import 'package:attendease/widgets/time_line_item.dart';
-import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:attendease/providers/class_provider.dart';
+import 'package:attendease/screens/loading_screen.dart';
+import 'package:attendease/widgets/time_table_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-enum WeekDays { mon, tue, wed, thu, fri, sat }
-
-class TimeTableScreen extends StatefulWidget {
+class TimeTableScreen extends ConsumerStatefulWidget {
   const TimeTableScreen({super.key});
 
   @override
-  State<TimeTableScreen> createState() => _TimeTableScreenState();
+  ConsumerState<TimeTableScreen> createState() => _TimeTableScreenState();
 }
 
-class _TimeTableScreenState extends State<TimeTableScreen> {
-  WeekDays _selectedSegment = WeekDays.mon;
+class _TimeTableScreenState extends ConsumerState<TimeTableScreen>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(
+        length: 6, vsync: this, initialIndex: DateTime.now().weekday);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final classes = ref.watch(classProvider);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Time Table'),
         ),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 12),
-              child: CustomSlidingSegmentedControl(
-                  padding: 10,
-                  initialValue: WeekDays.mon,
-                  innerPadding: const EdgeInsets.all(0),
-                  isStretch: true,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: AppColors.bg200,
-                      boxShadow: [
-                        BoxShadow(
-                          offset: const Offset(0, 4),
-                          blurRadius: 4,
-                          color: Colors.black.withOpacity(0.1),
-                        )
-                      ]),
-                  thumbDecoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: AppColors.primary100),
-                  onValueChanged: (WeekDays value) {
-                    setState(() {
-                      _selectedSegment = value;
-                    });
-                  },
-                  children: <WeekDays, Widget>{
-                    WeekDays.mon: Text(
-                      'Mon',
-                      style: AppText.textStyle(
-                        size: 15,
-                        color: _selectedSegment == WeekDays.mon
-                            ? Colors.white
-                            : AppColors.text200,
-                      ),
+        body: classes.when(data: (data) {
+          return Column(
+            children: [
+              const SizedBox(height: 20),
+              Container(
+                height: 40,
+                margin: const EdgeInsets.symmetric(horizontal: 15),
+                decoration: BoxDecoration(
+                  color: AppColors.bg200,
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                      color: Colors.black.withOpacity(0.10),
                     ),
-                    WeekDays.tue: Text(
-                      'Tue',
-                      style: AppText.textStyle(
-                        size: 15,
-                        color: _selectedSegment == WeekDays.tue
-                            ? Colors.white
-                            : AppColors.text200,
-                      ),
-                    ),
-                    WeekDays.wed: Text(
-                      'Wed',
-                      style: AppText.textStyle(
-                        size: 15,
-                        color: _selectedSegment == WeekDays.wed
-                            ? Colors.white
-                            : AppColors.text200,
-                      ),
-                    ),
-                    WeekDays.thu: Text(
-                      'Thu',
-                      style: AppText.textStyle(
-                        size: 15,
-                        color: _selectedSegment == WeekDays.thu
-                            ? Colors.white
-                            : AppColors.text200,
-                      ),
-                    ),
-                    WeekDays.fri: Text(
-                      'Fri',
-                      style: AppText.textStyle(
-                        size: 15,
-                        color: _selectedSegment == WeekDays.fri
-                            ? Colors.white
-                            : AppColors.text200,
-                      ),
-                    ),
-                    WeekDays.sat: Text(
-                      'Sat',
-                      style: AppText.textStyle(
-                        size: 15,
-                        color: _selectedSegment == WeekDays.sat
-                            ? Colors.white
-                            : AppColors.text200,
-                      ),
-                    )
-                  }),
-            ),
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                children: const [
-                  TimeLineItem(isFirst: true, isLast: false, isBreak: false),
-                  TimeLineItem(isFirst: false, isLast: false, isBreak: false),
-                  TimeLineItem(isFirst: false, isLast: false, isBreak: false),
-                  TimeLineItem(isFirst: false, isLast: false, isBreak: true),
-                  TimeLineItem(isFirst: false, isLast: false, isBreak: false),
-                  TimeLineItem(isFirst: false, isLast: false, isBreak: false),
-                  TimeLineItem(isFirst: false, isLast: true, isBreak: false),
-                ],
+                  ],
+                ),
+                child: TabBar(
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  controller: _tabController,
+                  indicator: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: AppColors.primary100,
+                  ),
+                  labelStyle: MyAppTypography.textStyle(
+                    color: AppColors.bg100,
+                    size: 15,
+                  ),
+                  unselectedLabelStyle:
+                      MyAppTypography.body3.copyWith(fontSize: 15),
+                  tabs: const [
+                    Tab(text: 'Mon'),
+                    Tab(text: 'Tue'),
+                    Tab(text: 'Wed'),
+                    Tab(text: 'Thu'),
+                    Tab(text: 'Fri'),
+                    Tab(text: 'Sat'),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    TimeTableItem(classes: data, day: 'Monday'),
+                    TimeTableItem(classes: data, day: 'Tuesday'),
+                    TimeTableItem(classes: data, day: 'Wednesday'),
+                    TimeTableItem(classes: data, day: 'Thursday'),
+                    TimeTableItem(classes: data, day: 'Friday'),
+                    TimeTableItem(classes: data, day: 'Saturday'),
+                  ],
+                ),
+              ),
+            ],
+          );
+        }, error: (error, stackTrace) {
+          return const Center(child: Text("An unexpected error occurred"));
+        }, loading: () {
+          return const LoadingScreen();
+        }),
       ),
     );
   }

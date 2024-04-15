@@ -41,14 +41,11 @@ class _CustomDropDownState extends State<CustomDropDown> {
             Center(
               child: Text(
                 widget.selectedMonth,
-                style: AppText.textStyle(
-                  color: Colors.white,
-                  size: 16.18,
-                ),
+                style: MyAppTypography.body2.copyWith(color: AppColors.bg100),
               ),
             ),
             const Spacer(),
-            Icon(
+            const Icon(
               Icons.arrow_drop_down,
               color: Colors.white,
             ),
@@ -83,10 +80,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
               ),
               child: Text(
                 widget.selectedMonth,
-                style: AppText.textStyle(
-                  color: Colors.white,
-                  size: 16.18,
-                ),
+                style: MyAppTypography.body2.copyWith(color: AppColors.bg100),
               ),
             ),
           );
@@ -103,10 +97,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
           ),
         ),
       ),
-      style: AppText.textStyle(
-        color: AppColors.text100,
-        size: 16.18,
-      ),
+      style: MyAppTypography.body2,
     );
   }
 }

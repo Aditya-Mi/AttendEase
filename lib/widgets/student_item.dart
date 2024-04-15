@@ -36,24 +36,24 @@ class StudentItem extends StatelessWidget {
             children: [
               Text(
                 'Aditya Mittal',
-                style: AppText.textStyle(color: AppColors.text100, size: 16.18),
+                style: MyAppTypography.body2,
               ),
               Text(
                 '14314803121',
-                style: AppText.textStyle(color: AppColors.text100, size: 12.94),
+                style: MyAppTypography.body1,
               ),
               const Spacer(),
               Text(
                 'Year : 4th Year',
-                style: AppText.textStyle(color: AppColors.text200, size: 12.94),
+                style: MyAppTypography.body3,
               ),
               Text(
                 'Branch : ECE',
-                style: AppText.textStyle(color: AppColors.text200, size: 12.94),
+                style: MyAppTypography.body3,
               ),
               Text(
                 'Section : 7E8',
-                style: AppText.textStyle(color: AppColors.text200, size: 12.94),
+                style: MyAppTypography.body3,
               ),
             ],
           ),
@@ -76,15 +76,13 @@ class StudentItem extends StatelessWidget {
                 children: [
                   Text(
                     '78%',
-                    style: AppText.textStyle(
-                        color: AppColors.text100, size: 16.18),
+                    style: MyAppTypography.body2,
                   ),
                   Text(
                     'Subject Attendance',
                     maxLines: 2,
                     textAlign: TextAlign.center,
-                    style: AppText.textStyle(
-                        color: AppColors.text200, size: 12.94),
+                    style: MyAppTypography.body3,
                   ),
                 ],
               ),

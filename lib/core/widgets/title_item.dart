@@ -29,7 +29,7 @@ class TitleItem extends StatelessWidget {
           Expanded(
             child: Text(
               title,
-              style: AppText.textStyle(size: 20, color: AppColors.text100),
+              style: MyAppTypography.body1.copyWith(fontSize: 20),
             ),
           ),
         ],

@@ -41,9 +41,8 @@ class _MainScreenState extends State<MainScreen> {
             selectedIconTheme: const IconThemeData(color: AppColors.primary100),
             unselectedIconTheme: const IconThemeData(color: AppColors.text200),
             selectedLabelStyle:
-                AppText.textStyle(color: AppColors.primary100, size: 12.94),
-            unselectedLabelStyle:
-                AppText.textStyle(color: AppColors.text200, size: 12.94),
+                MyAppTypography.body1.copyWith(color: AppColors.primary100),
+            unselectedLabelStyle: MyAppTypography.body3,
             elevation: 0.0,
             items: const [
               BottomNavigationBarItem(

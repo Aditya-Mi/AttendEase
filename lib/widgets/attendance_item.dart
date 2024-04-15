@@ -1,4 +1,5 @@
 import 'package:attendease/core/app_colors.dart';
+import 'package:attendease/core/app_shadow.dart';
 import 'package:attendease/core/app_text.dart';
 import 'package:attendease/core/widgets/progress_bar.dart';
 import 'package:flutter/material.dart';
@@ -28,11 +29,7 @@ class AttendanceItem extends StatelessWidget {
         color: AppColors.bg100,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
-          BoxShadow(
-            offset: const Offset(0, 4),
-            blurRadius: 4,
-            color: Colors.black.withOpacity(0.1),
-          ),
+          MyAppBoxShadow.myCustomBoxShadow(Colors.black.withOpacity(0.10)),
         ],
       ),
       child: Column(
@@ -46,10 +43,7 @@ class AttendanceItem extends StatelessWidget {
                 fit: FlexFit.loose,
                 child: Text(
                   subjectName,
-                  style: AppText.textStyle(
-                    color: AppColors.text100,
-                    size: 16.38,
-                  ),
+                  style: MyAppTypography.body5,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -59,34 +53,22 @@ class AttendanceItem extends StatelessWidget {
               ),
               Text(
                 section,
-                style: AppText.textStyle(
-                  color: AppColors.text100,
-                  size: 16.38,
-                ),
+                style: MyAppTypography.body5,
               ),
             ],
           ),
           Text(
             '($classType)',
-            style: AppText.textStyle(
-              color: AppColors.text200,
-              size: 12.94,
-            ),
+            style: MyAppTypography.body3,
           ),
           const Spacer(),
           Text(
             timings,
-            style: AppText.textStyle(
-              color: AppColors.text200,
-              size: 12.94,
-            ),
+            style: MyAppTypography.body3,
           ),
           Text(
             'Room Number $roomNumber',
-            style: AppText.textStyle(
-              color: AppColors.text200,
-              size: 12.94,
-            ),
+            style: MyAppTypography.body3,
           ),
           Row(
             children: [
@@ -98,10 +80,7 @@ class AttendanceItem extends StatelessWidget {
               ),
               Text(
                 '$attendance% Attendance',
-                style: AppText.textStyle(
-                  color: AppColors.text200,
-                  size: 12.94,
-                ),
+                style: MyAppTypography.body3,
               )
             ],
           )

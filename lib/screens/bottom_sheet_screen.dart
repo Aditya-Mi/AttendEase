@@ -73,10 +73,7 @@ class _BottomSheetScreenState extends State<BottomSheetScreen> {
                 ),
                 child: Text(
                   'For Theory',
-                  style: AppText.textStyle(
-                    color: AppColors.text100,
-                    size: 16.18,
-                  ),
+                  style: MyAppTypography.body2,
                 ),
               ),
               SizedBox(
@@ -121,10 +118,7 @@ class _BottomSheetScreenState extends State<BottomSheetScreen> {
                 ),
                 child: Text(
                   'For Practical',
-                  style: AppText.textStyle(
-                    color: AppColors.text100,
-                    size: 16.18,
-                  ),
+                  style: MyAppTypography.body2,
                 ),
               ),
               SizedBox(
@@ -227,7 +221,7 @@ class Item extends StatelessWidget {
       ),
       child: Text(
         text,
-        style: AppText.textStyle(color: AppColors.text100, size: 12.94),
+        style: MyAppTypography.body1,
       ),
     );
   }

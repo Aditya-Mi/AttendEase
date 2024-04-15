@@ -76,20 +76,14 @@ class _TakeAttendanceScreenState extends State<TakeAttendanceScreen> {
                 children: [
                   Text(
                     'Microwave Engineering | Theory | 8E7',
-                    style: AppText.textStyle(
-                      color: AppColors.text100,
-                      size: 16.18,
-                    ),
+                    style: MyAppTypography.body2,
                   ),
                   const SizedBox(
                     height: 7,
                   ),
                   Text(
                     'Total Students : 40',
-                    style: AppText.textStyle(
-                      color: AppColors.text100,
-                      size: 16.18,
-                    ),
+                    style: MyAppTypography.body2,
                   ),
                 ],
               ),

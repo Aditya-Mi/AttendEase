@@ -1,21 +1,16 @@
 import 'package:attendease/core/app_colors.dart';
 import 'package:attendease/core/app_text.dart';
+import 'package:attendease/core/functions.dart';
 import 'package:attendease/core/widgets/circle.dart';
+import 'package:attendease/models/class.dart';
 import 'package:flutter/material.dart';
 
 class UpcomingClassItem extends StatelessWidget {
-  final String subjectName;
-  final String classType;
-  final String timings;
-  final String roomNumber;
-  final String section;
-  const UpcomingClassItem(
-      {super.key,
-      required this.subjectName,
-      required this.classType,
-      required this.timings,
-      required this.roomNumber,
-      required this.section});
+  final Class kClass;
+  const UpcomingClassItem({
+    super.key,
+    required this.kClass,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -41,49 +36,40 @@ class UpcomingClassItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        text: subjectName,
-                        style: AppText.textStyle(
-                          color: AppColors.text100,
-                          size: 16.38,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: ' ($classType)',
-                            style: AppText.textStyle(
-                              color: AppColors.text200,
-                              size: 12.94,
+                Flexible(
+                  flex: 3,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          text: kClass.topic,
+                          style: MyAppTypography.body5,
+                          children: [
+                            TextSpan(
+                              text: ' (${kClass.type})',
+                              style: MyAppTypography.body3,
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    Text(
-                      timings,
-                      style: AppText.textStyle(
-                        color: AppColors.text200,
-                        size: 12.94,
+                      Text(
+                        '${convert24HourTo12Hour(kClass.startTime)} - ${convert24HourTo12Hour(kClass.endTime)}',
+                        style: MyAppTypography.body3,
                       ),
-                    ),
-                    Text(
-                      'Room Number $roomNumber',
-                      style: AppText.textStyle(
-                        color: AppColors.text200,
-                        size: 12.94,
+                      Text(
+                        'Room Number ${kClass.roomNo}',
+                        style: MyAppTypography.body3,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-                Text(
-                  section,
-                  style: AppText.textStyle(
-                    color: AppColors.text100,
-                    size: 16.38,
+                Flexible(
+                  flex: 1,
+                  child: Text(
+                    kClass.section,
+                    style: MyAppTypography.body5,
                   ),
                 ),
               ],
