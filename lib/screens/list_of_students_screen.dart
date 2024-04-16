@@ -3,7 +3,7 @@ import 'package:attendease/core/app_text.dart';
 import 'package:attendease/models/class_record.dart';
 import 'package:attendease/providers/class_provider.dart';
 import 'package:attendease/providers/filter_provider.dart';
-import 'package:attendease/screens/login_screen.dart';
+import 'package:attendease/screens/loading_screen.dart';
 import 'package:attendease/widgets/search_widget.dart';
 import 'package:attendease/widgets/student_item.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +13,13 @@ class ListOfStudentsScreen extends ConsumerStatefulWidget {
   final String id;
   final String startDate;
   final String endDate;
+  final double attendance;
   const ListOfStudentsScreen(
       {super.key,
       required this.id,
       required this.startDate,
-      required this.endDate});
+      required this.endDate,
+      required this.attendance});
 
   @override
   ConsumerState<ListOfStudentsScreen> createState() =>
@@ -128,10 +130,12 @@ class _ListOfStudentsScreenState extends ConsumerState<ListOfStudentsScreen>
                       StudentsList(
                         title: 'Present',
                         students: data.students,
+                        attendance: widget.attendance,
                       ),
                       StudentsList(
                         title: 'Absent',
                         students: data.students,
+                        attendance: widget.attendance,
                       ),
                     ],
                   ),
@@ -144,7 +148,7 @@ class _ListOfStudentsScreenState extends ConsumerState<ListOfStudentsScreen>
               child: Text('An unexpected error occurred'),
             );
           },
-          loading: () => const LoginScreen(),
+          loading: () => const LoadingScreen(),
         ),
       ),
     );
@@ -153,8 +157,13 @@ class _ListOfStudentsScreenState extends ConsumerState<ListOfStudentsScreen>
 
 class StudentsList extends ConsumerWidget {
   final String title;
+  final double attendance;
   final List<Student> students;
-  const StudentsList({super.key, required this.title, required this.students});
+  const StudentsList(
+      {super.key,
+      required this.title,
+      required this.students,
+      required this.attendance});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -213,6 +222,7 @@ class StudentsList extends ConsumerWidget {
                       return StudentItem(
                         filters: filters,
                         student: filterList[index],
+                        attendance: attendance,
                       );
                     },
                     separatorBuilder: (context, index) {

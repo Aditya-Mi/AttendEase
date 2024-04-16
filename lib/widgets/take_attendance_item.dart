@@ -120,12 +120,12 @@ class _TakeAttendanceItemState extends State<TakeAttendanceItem> {
                         AttendanceStatus.Absent) {
                       widget.onAttendanceChanged(AttendanceStatus.None);
                     } else {
-                      widget.onAttendanceChanged(AttendanceStatus.None);
+                      widget.onAttendanceChanged(AttendanceStatus.Present);
                     }
                   });
                 },
                 child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
+                  duration: const Duration(milliseconds: 250),
                   padding: const EdgeInsets.symmetric(
                     vertical: 8,
                   ),
@@ -153,7 +153,7 @@ class _TakeAttendanceItemState extends State<TakeAttendanceItem> {
                 ),
               ),
               AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
+                duration: const Duration(milliseconds: 250),
                 width: widget.studentAttendance.attendanceStatus ==
                             AttendanceStatus.Absent ||
                         widget.studentAttendance.attendanceStatus ==
@@ -177,7 +177,7 @@ class _TakeAttendanceItemState extends State<TakeAttendanceItem> {
                   });
                 },
                 child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
+                  duration: const Duration(milliseconds: 250),
                   padding: const EdgeInsets.symmetric(
                     vertical: 8,
                   ),

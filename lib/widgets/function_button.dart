@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class FunctionButton extends StatelessWidget {
   final IconData icon;
   final Widget text;
-  final VoidCallback function;
+  final Function() function;
   const FunctionButton(
       {super.key,
       required this.icon,
@@ -13,33 +13,30 @@ class FunctionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: function,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          IconButton(
-            alignment: Alignment.center,
-            onPressed: () {},
-            icon: Icon(
-              icon,
-              color: AppColors.bg100,
-            ),
-            style: IconButton.styleFrom(
-              backgroundColor: AppColors.primary100,
-              fixedSize: const Size(61, 51),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        IconButton(
+          alignment: Alignment.center,
+          onPressed: function,
+          icon: Icon(
+            icon,
+            color: AppColors.bg100,
+          ),
+          style: IconButton.styleFrom(
+            backgroundColor: AppColors.primary100,
+            fixedSize: const Size(61, 51),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
             ),
           ),
-          const SizedBox(
-            height: 8,
-          ),
-          text,
-        ],
-      ),
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        text,
+      ],
     );
   }
 }

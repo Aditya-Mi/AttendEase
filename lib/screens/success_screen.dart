@@ -1,17 +1,19 @@
 import 'package:attendease/core/app_colors.dart';
 import 'package:attendease/core/app_text.dart';
 import 'package:attendease/core/widgets/custom_divider.dart';
+import 'package:attendease/providers/user_provider.dart';
 import 'package:attendease/widgets/function_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SuccessScreen extends StatefulWidget {
+class SuccessScreen extends ConsumerStatefulWidget {
   const SuccessScreen({super.key});
 
   @override
-  State<SuccessScreen> createState() => _SuccessScreenState();
+  ConsumerState<SuccessScreen> createState() => _SuccessScreenState();
 }
 
-class _SuccessScreenState extends State<SuccessScreen> {
+class _SuccessScreenState extends ConsumerState<SuccessScreen> {
   bool _isCollapse = false;
   @override
   void initState() {
@@ -33,13 +35,7 @@ class _SuccessScreenState extends State<SuccessScreen> {
       child: Scaffold(
         appBar: _isCollapse
             ? AppBar(
-                leading: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                  ),
-                ),
+                automaticallyImplyLeading: false,
               )
             : null,
         body: Stack(
@@ -118,7 +114,8 @@ class _SuccessScreenState extends State<SuccessScreen> {
                               width: 32,
                             ),
                             FunctionButton(
-                              function: () {
+                              function: () async {
+                                ref.refresh(classIdsProvider);
                                 Navigator.of(context).pop();
                               },
                               icon: Icons.keyboard_return,
@@ -130,14 +127,14 @@ class _SuccessScreenState extends State<SuccessScreen> {
                     ),
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 2,
                   ),
                   Image.asset(
                     'assets/images/logo.png',
-                    scale: 1.6,
+                    scale: 16,
                   ),
                   const SizedBox(
-                    height: 18,
+                    height: 5,
                   ),
                   Text(
                     'Powered by AttendEase',

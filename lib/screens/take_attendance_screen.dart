@@ -163,8 +163,10 @@ class _TakeAttendanceScreenState extends ConsumerState<TakeAttendanceScreen> {
                         studentAttendance: _listOfStudentAttendance[index],
                         noOfClasses: data.noOfClasses,
                         onAttendanceChanged: (status) {
-                          _listOfStudentAttendance[index].attendanceStatus =
-                              status;
+                          setState(() {
+                            _listOfStudentAttendance[index].attendanceStatus =
+                                status;
+                          });
                         },
                       );
                     },

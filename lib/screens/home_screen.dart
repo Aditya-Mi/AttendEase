@@ -4,6 +4,7 @@ import 'package:attendease/core/functions.dart';
 import 'package:attendease/core/widgets/title_item.dart';
 import 'package:attendease/models/class.dart';
 import 'package:attendease/providers/class_provider.dart';
+import 'package:attendease/providers/user_provider.dart';
 import 'package:attendease/screens/loading_screen.dart';
 import 'package:attendease/widgets/current_class_item.dart';
 import 'package:attendease/widgets/upcoming_class_item.dart';
@@ -20,8 +21,16 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
+  void initState() {
+    super.initState();
+    ref.refresh(classIdsProvider);
+    ref.refresh(classProvider);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final classes = ref.watch(classProvider);
+    final classIds = ref.watch(classIdsProvider).value;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -40,20 +49,32 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             });
             DateTime currentTime = DateTime.now();
             Class? ongoingClass;
+            print(classIds);
             for (var classData in classesOnCurrentDay) {
-              DateTime startTime = parseTime(classData.startTime);
-              DateTime endTime = parseTime(classData.endTime);
+              DateTime startTime = currentParseTime(classData.startTime);
+              DateTime endTime = currentParseTime(classData.endTime);
               if (startTime.isBefore(currentTime) &&
                   endTime.isAfter(currentTime)) {
+                if (classIds!.contains(classData.sId)) {
+                  break;
+                }
                 ongoingClass = classData;
                 break;
+              }
+            }
+            List<Class> upComingClasses = [];
+            for (var classData in classesOnCurrentDay) {
+              DateTime startTime = currentParseTime(classData.startTime);
+              if (startTime.isAfter(currentTime)) {
+                upComingClasses.add(classData);
               }
             }
 
             // Remove the ongoing class from the list
             if (ongoingClass != null) {
-              classesOnCurrentDay.remove(ongoingClass);
+              upComingClasses.remove(ongoingClass);
             }
+
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 21, vertical: 15),
               child: Column(
@@ -92,7 +113,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         color: AppColors.bg200,
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: classesOnCurrentDay.isEmpty
+                      child: upComingClasses.isEmpty
                           ? Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -110,7 +131,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           : ListView.separated(
                               itemBuilder: (context, index) {
                                 return UpcomingClassItem(
-                                  kClass: classesOnCurrentDay[index],
+                                  kClass: upComingClasses[index],
                                 );
                               },
                               separatorBuilder:
@@ -124,7 +145,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   ),
                                 );
                               },
-                              itemCount: classesOnCurrentDay.length,
+                              itemCount: upComingClasses.length,
                             ),
                     ),
                   ),

@@ -11,3 +11,9 @@ final userProvider = FutureProvider<User>((ref) {
       ref.read(sharedPreferenceRepositoryProvider);
   return sharedPreferencesRepository.getUser();
 });
+
+final classIdsProvider = FutureProvider<List<String>>((ref) {
+  final sharedPreferencesRepository =
+      ref.read(sharedPreferenceRepositoryProvider);
+  return sharedPreferencesRepository.getClassIds();
+});

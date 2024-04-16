@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class ClassRecord {
   final String id;
   final List<Student> students;
@@ -28,6 +29,9 @@ class ClassRecord {
     int presentStudents = getNoOfStudentsPresent();
     return (presentStudents / totalStudents) * 100;
   }
+
+  @override
+  String toString() => 'ClassRecord(id: $id, students: $students)';
 }
 
 class Student {
@@ -56,5 +60,10 @@ class Student {
       lastName: json['student']['lastName'],
       status: json['status'],
     );
+  }
+
+  @override
+  String toString() {
+    return 'Student(id: $id, username: $username, email: $email, firstName: $firstName, lastName: $lastName, status: $status)';
   }
 }

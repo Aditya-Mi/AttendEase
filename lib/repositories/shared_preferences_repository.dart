@@ -18,6 +18,33 @@ class SharedPreferencesRepository {
     return user;
   }
 
+  Future<List<String>> getClassIds() async {
+    print('getId called');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? classIds = prefs.getStringList(CLASS_KEY);
+    print(classIds);
+    if (classIds != null) {
+      return classIds;
+    }
+    return [];
+  }
+
+  Future<void> saveClassId(String id) async {
+    print('saveId called');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? classIds = prefs.getStringList(CLASS_KEY);
+    if (classIds != null) {
+      classIds.add(id);
+      print(classIds);
+      prefs.setStringList(CLASS_KEY, classIds);
+    } else {
+      List<String> ids = [];
+      ids.add(id);
+      print(ids);
+      prefs.setStringList(CLASS_KEY, ids);
+    }
+  }
+
   Future<String> getUserId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userJson = prefs.getString(USER_KEY);

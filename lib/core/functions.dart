@@ -21,6 +21,21 @@ DateTime parseTime(String timeString) {
       minutes); // Date doesn't matter, only time matters for comparison
 }
 
+DateTime currentParseTime(String timeString) {
+  List<String> timeParts = timeString.split(':');
+  int hours = int.parse(timeParts[0]);
+  int minutes = int.parse(timeParts[1]);
+  DateTime currentTime = DateTime.now();
+
+  return DateTime(
+    currentTime.year,
+    currentTime.month,
+    currentTime.day,
+    hours,
+    minutes,
+  ); // Date doesn't matter, only time matters for comparison
+}
+
 bool isAfter(String time1, String time2) {
   // Parse time strings into DateTime objects
   DateTime dateTime1 = DateTime.parse('2000-01-01 $time1');

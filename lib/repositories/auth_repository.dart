@@ -32,7 +32,6 @@ class AuthRepository {
         return true;
       }
     } catch (e) {
-      print(e.toString());
       return false;
     }
     return false;

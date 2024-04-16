@@ -27,7 +27,6 @@ class ClassRepository {
       final id = await _sharedPreferencesRepository.getUserId();
       final url = Uri.https(BASE_URL, '/api/v1/teacher/classes/$id');
       final response = await http.get(url, headers: _getHeader());
-      print(response.reasonPhrase);
       if (response.statusCode == 200) {
         final result = jsonDecode(response.body);
         List<Class> classes = result['data']['classes']
@@ -37,21 +36,25 @@ class ClassRepository {
       }
       throw 'An unexpected error occurred';
     } catch (e) {
-      print(e.toString());
       throw e.toString();
     }
   }
 
   Future<List<ClassRecord>> getRecords(
     List<String>? classIds,
-    String startDate,
-    String endDate,
+    String? startDate,
+    String? endDate,
   ) async {
     try {
-      final queryParameters = {'date[gte]': startDate, 'date[lt]': endDate};
-      final url = Uri.https(BASE_URL, '/api/v1/attendance/', queryParameters);
+      Map<String, dynamic>? queryParameters;
+      Uri uri;
+      if (startDate != null && endDate != null) {
+        queryParameters = {'date[gte]': startDate, 'date[lt]': endDate};
+        uri = Uri.https(BASE_URL, '/api/v1/attendance/', queryParameters);
+      }
+      uri = Uri.https(BASE_URL, '/api/v1/attendance');
       final response = await http.post(
-        url,
+        uri,
         headers: _getHeader(),
         body: jsonEncode(
           {"classIds": classIds},
@@ -66,7 +69,6 @@ class ClassRepository {
       }
       throw 'An unexpected error occurred';
     } catch (e) {
-      print(e.toString());
       throw e.toString();
     }
   }
@@ -88,6 +90,7 @@ class ClassRepository {
           },
         ),
       );
+      print(response.statusCode);
       if (response.statusCode == 200) {
         final result = jsonDecode(response.body);
         ClassRecord classRecords = ClassRecord.fromJson(result['data'][0]);
@@ -95,7 +98,6 @@ class ClassRepository {
       }
       throw 'An unexpected error occurred';
     } catch (e) {
-      print(e.toString());
       throw e.toString();
     }
   }
@@ -106,12 +108,13 @@ class ClassRepository {
       final response = await http.get(url, headers: _getHeader());
       if (response.statusCode == 200) {
         final result = jsonDecode(response.body);
-        SingleClassRecord singleClassRecord = result['data']['classRecord'];
+        SingleClassRecord singleClassRecord = SingleClassRecord.fromJson(
+          result['data']['classRecord'],
+        );
         return singleClassRecord;
       }
       throw 'An unexpected error occurred';
     } catch (e) {
-      print(e.toString());
       throw e.toString();
     }
   }
@@ -139,10 +142,12 @@ class ClassRepository {
         ),
       );
       if (response.statusCode == 201) {
+        print(listOfAttendance[0].kClass);
+        await SharedPreferencesRepository()
+            .saveClassId(listOfAttendance[0].kClass);
         return true;
       }
     } catch (e) {
-      print(e.toString());
       return false;
     }
     return false;

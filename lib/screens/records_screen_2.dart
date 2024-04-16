@@ -3,8 +3,11 @@ import 'package:attendease/core/app_string.dart';
 import 'package:attendease/core/app_text.dart';
 import 'package:attendease/core/functions.dart';
 import 'package:attendease/core/widgets/title_item.dart';
+import 'package:attendease/models/class.dart';
+import 'package:attendease/providers/class_provider.dart';
 import 'package:attendease/providers/filter_provider.dart';
 import 'package:attendease/screens/list_of_students_screen.dart';
+import 'package:attendease/screens/loading_screen.dart';
 import 'package:attendease/widgets/attendance_item.dart';
 import 'package:attendease/widgets/custom_drop_down.dart';
 import 'package:attendease/widgets/search_widget.dart';
@@ -31,7 +34,7 @@ class _RecordsScreen2State extends ConsumerState<RecordsScreen2> {
   late DateTime _focusDate;
   late String _selectedMonth;
   late String _selectedYear;
-  late int _selectedDay;
+  late int _selectedDate;
   final EasyInfiniteDateTimelineController _easyInfiniteDateTimelineController =
       EasyInfiniteDateTimelineController();
 
@@ -41,7 +44,7 @@ class _RecordsScreen2State extends ConsumerState<RecordsScreen2> {
       _focusDate = DateTime(
         int.parse(_selectedYear),
         getMonthNumber(_selectedMonth),
-        _selectedDay,
+        _selectedDate,
       );
       _easyInfiniteDateTimelineController.jumpToFocusDate();
     });
@@ -53,7 +56,7 @@ class _RecordsScreen2State extends ConsumerState<RecordsScreen2> {
       _focusDate = DateTime(
         int.parse(_selectedYear),
         getMonthNumber(_selectedMonth),
-        _selectedDay,
+        _selectedDate,
       );
       _easyInfiniteDateTimelineController.jumpToFocusDate();
     });
@@ -68,7 +71,7 @@ class _RecordsScreen2State extends ConsumerState<RecordsScreen2> {
     currentMonth = currentDate.month;
     _selectedYear = DateFormat.y().format(currentDate);
     currentYear = currentDate.year;
-    _selectedDay = currentDay;
+    _selectedDate = currentDay;
     noOfDays = DateUtils.getDaysInMonth(currentYear, currentMonth);
     for (int i = currentYear - 10; i <= currentYear; i++) {
       years.add(i.toString());
@@ -79,6 +82,9 @@ class _RecordsScreen2State extends ConsumerState<RecordsScreen2> {
   @override
   Widget build(BuildContext context) {
     final filters = ref.watch(filterProvider);
+    final records =
+        ref.watch(recordScreen2Provider(DateFormat('EEEE').format(_focusDate)));
+    final classes = ref.read(classProvider).value;
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.bg200,
@@ -145,7 +151,7 @@ class _RecordsScreen2State extends ConsumerState<RecordsScreen2> {
               onDateChange: (selectedDate) {
                 setState(() {
                   _focusDate = selectedDate;
-                  _selectedDay = selectedDate.day;
+                  _selectedDate = selectedDate.day;
                 });
               },
               showTimelineHeader: false,
@@ -253,31 +259,71 @@ class _RecordsScreen2State extends ConsumerState<RecordsScreen2> {
             Expanded(
               child: Container(
                 color: AppColors.bg200,
-                padding: const EdgeInsets.symmetric(horizontal: 40),
-                child: ListView.separated(
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      // onTap: () => Navigator.of(context).push(
-                      //   MaterialPageRoute(
-                      //     builder: (context) => const ListOfStudentsScreen(),
-                      //   ),
-                      // ),
-                      child: const AttendanceItem(
-                        subjectName: 'Microwave Engineering',
-                        classType: 'Theory',
-                        timings: '1:00 pm- 2:25 pm',
-                        roomNumber: '405',
-                        section: '8E7',
-                        attendance: '58',
-                      ),
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: records.when(
+                  data: (data) {
+                    List<Class> filteredClasses = [];
+                    for (var classRecord in data) {
+                      var correspondingClass = classes?.firstWhere(
+                        (classItem) => classItem.sId == classRecord.id,
+                      );
+                      if (correspondingClass != null) {
+                        filteredClasses.add(correspondingClass);
+                      }
+                    }
+                    return data.isEmpty
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset('assets/images/no_current_class.png'),
+                              Text(
+                                'No Class was held on this date',
+                                style: MyAppTypography.body2.copyWith(
+                                  color: const Color(0xffCCCCCC),
+                                ),
+                              )
+                            ],
+                          )
+                        : ListView.separated(
+                            itemBuilder: (context, index) {
+                              final attendance =
+                                  data[index].calculateAttendancePercentage();
+                              DateTime tomorrow =
+                                  _focusDate.add(const Duration(days: 1));
+                              return GestureDetector(
+                                onTap: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => ListOfStudentsScreen(
+                                      id: filteredClasses[index].sId,
+                                      startDate: DateFormat('yyyy-MM-dd')
+                                          .format(_focusDate),
+                                      endDate: DateFormat('yyyy-MM-dd')
+                                          .format(tomorrow),
+                                      attendance: attendance,
+                                    ),
+                                  ),
+                                ),
+                                child: AttendanceItem(
+                                  attendance: attendance,
+                                  kClass: filteredClasses[index],
+                                  classRecord: data[index],
+                                ),
+                              );
+                            },
+                            separatorBuilder: (context, index) {
+                              return const SizedBox(
+                                height: 19,
+                              );
+                            },
+                            itemCount: data.length,
+                          );
+                  },
+                  error: (error, stackTrace) {
+                    return const Center(
+                      child: Text('An unexpected error occurred'),
                     );
                   },
-                  separatorBuilder: (context, index) {
-                    return const SizedBox(
-                      height: 19,
-                    );
-                  },
-                  itemCount: 5,
+                  loading: () => const LoadingScreen(),
                 ),
               ),
             ),

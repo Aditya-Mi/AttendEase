@@ -9,10 +9,12 @@ import 'package:flutter/material.dart';
 class StudentItem extends StatelessWidget {
   final Student student;
   final Filters filters;
+  final double attendance;
   const StudentItem({
     super.key,
     required this.student,
     required this.filters,
+    required this.attendance,
   });
 
   @override
@@ -85,7 +87,7 @@ class StudentItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    '78%',
+                    '$attendance%',
                     style: MyAppTypography.body2,
                   ),
                   Text(

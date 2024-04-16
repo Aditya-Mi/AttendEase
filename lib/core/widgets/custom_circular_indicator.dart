@@ -31,8 +31,8 @@ class _CustomCircularIndicatorState extends State<CustomCircularIndicator>
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 60,
-      height: 60,
+      width: 55,
+      height: 55,
       child: AnimatedBuilder(
         animation: _controller,
         builder: (context, child) {
