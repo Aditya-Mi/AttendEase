@@ -1,7 +1,6 @@
 import 'package:attendease/core/app_colors.dart';
 import 'package:attendease/core/app_shadow.dart';
 import 'package:attendease/core/app_text.dart';
-import 'package:attendease/core/functions.dart';
 import 'package:attendease/models/single_class_record.dart';
 import 'package:attendease/models/student_attendance.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +10,14 @@ class TakeAttendanceItem extends StatefulWidget {
   final int noOfClasses;
   final StudentAttendance studentAttendance;
   final Function(AttendanceStatus) onAttendanceChanged;
+  final String enrollment;
   const TakeAttendanceItem({
     super.key,
     required this.student,
     required this.noOfClasses,
     required this.studentAttendance,
     required this.onAttendanceChanged,
+    required this.enrollment,
   });
 
   @override
@@ -50,8 +51,10 @@ class _TakeAttendanceItemState extends State<TakeAttendanceItem> {
 
   @override
   Widget build(BuildContext context) {
-    final attendancePercent =
+    final attendance =
         (widget.student.classAttended / widget.noOfClasses) * 100;
+    final attendancePercent = attendance.toInt();
+
     final width = MediaQuery.of(context).size.width;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 7),
@@ -79,7 +82,7 @@ class _TakeAttendanceItemState extends State<TakeAttendanceItem> {
                       style: MyAppTypography.body2,
                     ),
                     Text(
-                      generateRandomNumber(),
+                      widget.enrollment,
                       style: MyAppTypography.body3.copyWith(fontSize: 12),
                     ),
                   ],

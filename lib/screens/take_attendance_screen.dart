@@ -1,6 +1,7 @@
 import 'package:attendease/core/app_colors.dart';
 import 'package:attendease/core/app_shadow.dart';
 import 'package:attendease/core/app_text.dart';
+import 'package:attendease/core/functions.dart';
 import 'package:attendease/core/widgets/custom_circular_indicator.dart';
 import 'package:attendease/models/class.dart';
 import 'package:attendease/models/student_attendance.dart';
@@ -25,6 +26,7 @@ class _TakeAttendanceScreenState extends ConsumerState<TakeAttendanceScreen> {
   bool _isSearching = false;
   bool _isLoading = false;
   late List<StudentAttendance> _listOfStudentAttendance = [];
+  late List<String> enrollment;
 
   List<SubmitStudent> convertToSubmitStudents(
       List<StudentAttendance> studentAttendanceList) {
@@ -50,6 +52,12 @@ class _TakeAttendanceScreenState extends ConsumerState<TakeAttendanceScreen> {
     }
 
     return submitStudents;
+  }
+
+  @override
+  void initState() {
+    enrollment = generateRandomNumbers(50);
+    super.initState();
   }
 
   @override
@@ -162,6 +170,7 @@ class _TakeAttendanceScreenState extends ConsumerState<TakeAttendanceScreen> {
                         student: data.students[index],
                         studentAttendance: _listOfStudentAttendance[index],
                         noOfClasses: data.noOfClasses,
+                        enrollment: enrollment[index],
                         onAttendanceChanged: (status) {
                           setState(() {
                             _listOfStudentAttendance[index].attendanceStatus =

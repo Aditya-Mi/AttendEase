@@ -23,7 +23,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    ref.refresh(classIdsProvider);
     ref.refresh(classProvider);
   }
 

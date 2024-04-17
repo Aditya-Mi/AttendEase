@@ -175,6 +175,22 @@ void bottomSheet(BuildContext context, bool isRecordScreen1) {
       });
 }
 
+List<String> generateRandomNumbers(int count) {
+  Random random = Random();
+  List<String> numbers = [];
+
+  for (int i = 0; i < count; i++) {
+    // Generate a random 10-digit number
+    String number = '';
+    for (int j = 0; j < 10; j++) {
+      number += random.nextInt(10).toString();
+    }
+    numbers.add(number);
+  }
+
+  return numbers;
+}
+
 int getMonthNumber(String monthName) {
   // Convert the month name to lowercase for case-insensitive comparison
   String lowercaseMonthName = monthName.toLowerCase();
